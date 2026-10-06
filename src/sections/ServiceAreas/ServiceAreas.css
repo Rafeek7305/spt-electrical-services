@@ -1,0 +1,90 @@
+/* Service Areas Section Styling */
+.service-areas-section {
+  padding: 4rem 0;
+  background-color: var(--slate-50);
+}
+
+.service-areas-card {
+  background-color: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 3.5rem 3rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.areas-header {
+  max-width: 650px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.areas-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 2.5rem;
+}
+
+.area-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  background-color: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  transition: all var(--transition-fast);
+}
+
+.area-chip:hover {
+  background-color: var(--amber-50);
+  border-color: var(--amber-500);
+  color: var(--amber-600);
+  transform: translateY(-2px);
+}
+
+.area-pin-icon {
+  color: var(--amber-500);
+}
+
+.areas-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--slate-200);
+  text-align: left;
+}
+
+.areas-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--slate-700);
+  font-size: 0.95rem;
+}
+
+.prompt-icon {
+  color: var(--amber-500);
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .service-areas-card {
+    padding: 2rem 1.5rem;
+  }
+  .areas-footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  .areas-footer button {
+    width: 100%;
+  }
+}
