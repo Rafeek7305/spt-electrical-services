@@ -1,6 +1,6 @@
 import React from 'react';
 import logoImg from '../../assets/logo/logo.png';
-import { IconZap, IconPhone, IconWhatsApp, IconMapPin, IconArrowUpRight } from '../common/Icons';
+import { IconZap, IconPhone, IconWhatsApp, IconMapPin, IconArrowUpRight, IconClock, IconShieldCheck } from '../common/Icons';
 import './Footer.css';
 
 export const Footer = ({ onOpenContactModal }) => {
@@ -24,7 +24,10 @@ export const Footer = ({ onOpenContactModal }) => {
 
   return (
     <footer id="contact" className="site-footer">
-      <div className="container">
+      {/* Subtle Warm Top Glow */}
+      <div className="footer-ambient-glow"></div>
+
+      <div className="container footer-container">
         {/* Main Footer Grid */}
         <div className="footer-grid">
           {/* Brand Col */}
@@ -35,15 +38,19 @@ export const Footer = ({ onOpenContactModal }) => {
             <p className="footer-brand-desc">
               S.P.T. Electrical Services delivers licensed, high-standard electrical installation, wiring, panel maintenance, and repairs for residential, commercial, and industrial clients.
             </p>
+            
             <div className="footer-trust-badge">
-              <IconZap size={16} className="badge-zap" />
-              <span>Safety Certified Electrical Contracting</span>
+              <IconShieldCheck size={16} className="badge-shield" />
+              <span>Licensed & Safety Certified Contracting</span>
             </div>
           </div>
 
           {/* Quick Links Col */}
           <div className="footer-col">
-            <h4 className="footer-col-title">Navigation</h4>
+            <h4 className="footer-col-title">
+              <span>Navigation</span>
+              <div className="footer-title-bar"></div>
+            </h4>
             <ul className="footer-links">
               <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')}>Home</a></li>
               <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Services</a></li>
@@ -56,7 +63,10 @@ export const Footer = ({ onOpenContactModal }) => {
 
           {/* Core Services Col */}
           <div className="footer-col">
-            <h4 className="footer-col-title">Services</h4>
+            <h4 className="footer-col-title">
+              <span>Services</span>
+              <div className="footer-title-bar"></div>
+            </h4>
             <ul className="footer-links">
               <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Electrical Installation</a></li>
               <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Wiring & Rewiring</a></li>
@@ -68,39 +78,51 @@ export const Footer = ({ onOpenContactModal }) => {
 
           {/* Contact & Inquiry Col */}
           <div className="footer-col footer-contact-col">
-            <h4 className="footer-col-title">Service Inquiry</h4>
-            <p className="footer-contact-text">
-              Have an upcoming electrical requirement or emergency panel issue? Reach our technical response team.
-            </p>
-            <button 
-              className="btn btn-primary footer-cta-btn"
-              onClick={() => onOpenContactModal()}
-            >
-              <IconZap size={16} />
-              <span>Request Service</span>
-            </button>
-            <a 
-              href="https://wa.me/?text=Hello%20S.P.T.%20Electrical%20Services," 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="footer-whatsapp-link"
-            >
-              <IconWhatsApp size={16} />
-              <span>WhatsApp Direct Chat</span>
-            </a>
+            <h4 className="footer-col-title">
+              <span>Service Inquiry</span>
+              <div className="footer-title-bar"></div>
+            </h4>
+            <div className="footer-inquiry-box">
+              <p className="footer-contact-text">
+                Have an upcoming electrical requirement or emergency panel issue? Reach our technical response team.
+              </p>
+              
+              <button 
+                className="footer-cta-btn"
+                onClick={() => onOpenContactModal && onOpenContactModal('General Footer Inquiry')}
+                type="button"
+              >
+                <IconZap size={16} />
+                <span>Request Service</span>
+              </button>
+
+              <a 
+                href="https://wa.me/919876543210?text=Hello%20S.P.T.%20Electrical%20Services," 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="footer-whatsapp-link"
+              >
+                <IconWhatsApp size={17} />
+                <span>WhatsApp Direct Chat</span>
+              </a>
+            </div>
           </div>
         </div>
 
         {/* Footer Bottom Line */}
         <div className="footer-bottom">
           <p className="copyright-text">
-            © {currentYear} S.P.T. Electrical Services. All rights reserved. Professional Electrical Contracting.
+            © {currentYear} <span className="copyright-bold">S.P.T. Electrical Services</span>. All rights reserved. Professional Electrical Contracting.
           </p>
           <div className="footer-legal-links">
-            <a href="#home" onClick={(e) => handleNavClick(e, '#home')}>Back to Top ↑</a>
+            <a href="#home" className="footer-back-top" onClick={(e) => handleNavClick(e, '#home')}>
+              <span>Back to Top</span>
+              <IconArrowUpRight size={15} />
+            </a>
           </div>
         </div>
       </div>
     </footer>
   );
 };
+

@@ -26,7 +26,7 @@
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transform: scale(1.04);
   filter: brightness(0.72) saturate(1.1);
 }
@@ -213,7 +213,7 @@
   height: 420px;
   border-radius: 24px;
   overflow: hidden;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, filter 0.8s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease, filter 0.6s ease;
   cursor: pointer;
   user-select: none;
   background-color: #0F172A;
@@ -366,7 +366,7 @@
   height: 100%;
   background-color: #F59E0B;
   border-radius: 2px;
-  animation: progressFill 3.2s linear forwards;
+  animation: progressFill 2s linear forwards;
 }
 
 @keyframes progressFill {
@@ -374,71 +374,179 @@
   to { width: 100%; }
 }
 
-/* Responsive Media Queries */
+/* Desktop line break helper */
+.hero-br-desktop {
+  display: block;
+}
+
+/* ==========================================================================
+   Responsive Media Queries
+   ========================================================================== */
+
 @media (max-width: 1024px) {
   .hero-sync-container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
   }
+
+  .hero-left-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-br-desktop {
+    display: none;
+  }
+
   .hero-sync-headline {
-    font-size: 3rem;
+    font-size: 3.25rem;
+    text-align: center;
   }
+
+  .hero-sync-desc {
+    text-align: center;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons-row {
+    justify-content: center;
+  }
+
+  .hero-trust-flex {
+    justify-content: center;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .sync-3card-stage {
-    height: 360px;
+    height: 380px;
   }
+
   .sync-card {
-    width: 280px;
-    height: 360px;
+    width: 290px;
+    height: 380px;
   }
 }
 
 @media (max-width: 768px) {
   .hero-sync-section {
-    padding-top: calc(var(--header-height) + 1.5rem);
+    padding-top: calc(var(--header-height) + 2rem);
     padding-bottom: 3.5rem;
   }
+
+  .hero-left-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-eyebrow-tag {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .hero-sync-headline {
-    font-size: 2.35rem;
+    font-size: 2.65rem;
+    text-align: center;
+    line-height: 1.18;
   }
+
   .hero-sync-desc {
-    font-size: 0.975rem;
+    font-size: 1rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
   }
+
   .hero-buttons-row {
     width: 100%;
+    max-width: 380px;
     flex-direction: column;
+    gap: 0.85rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2.25rem;
   }
-  .hero-gold-pill-btn, .hero-dark-outline-btn {
+
+  .hero-gold-pill-btn, 
+  .hero-dark-outline-btn {
     width: 100%;
+    justify-content: center;
+    padding: 0.95rem 1.5rem;
   }
+
   .hero-trust-flex {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.5rem;
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center;
   }
+
+  .trust-flex-item {
+    justify-content: center;
+    text-align: center;
+  }
+
   .sync-3card-stage {
-    height: 320px;
+    height: 330px;
   }
+
   .sync-card {
-    width: 250px;
-    height: 320px;
+    width: 255px;
+    height: 330px;
   }
 }
 
 @media (max-width: 480px) {
   .hero-sync-headline {
-    font-size: 2.05rem;
+    font-size: 2.25rem;
+    letter-spacing: -0.015em;
   }
+
+  .hero-sync-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .hero-trust-flex {
+    gap: 0.85rem 1rem;
+    max-width: 340px;
+  }
+
+  .trust-flex-item {
+    font-size: 0.775rem;
+  }
+
   .sync-card {
-    width: 220px;
-    height: 290px;
+    width: 230px;
+    height: 300px;
   }
+
   .sync-3card-stage {
-    height: 290px;
+    height: 300px;
   }
+
   .sync-card-num {
-    font-size: 1.4rem;
+    font-size: 1.45rem;
   }
+
   .sync-card-title {
     font-size: 0.75rem;
   }
+
+  .sync-controls-bar {
+    gap: 0.85rem;
+  }
+
+  .sync-progress-track {
+    width: 100px;
+  }
 }
+

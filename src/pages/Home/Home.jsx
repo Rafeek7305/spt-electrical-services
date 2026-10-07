@@ -9,7 +9,6 @@ import { Process } from '../../sections/Process/Process';
 import { Reviews } from '../../sections/Reviews/Reviews';
 import { ServiceAreas } from '../../sections/ServiceAreas/ServiceAreas';
 import { FAQ } from '../../sections/FAQ/FAQ';
-import { FinalCTA } from '../../sections/FinalCTA/FinalCTA';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
 import './Home.css';
@@ -41,8 +40,7 @@ export const Home = () => {
         <Process onOpenContactModal={handleOpenContactModal} />
         <Reviews onOpenContactModal={handleOpenContactModal} />
         <ServiceAreas onOpenContactModal={handleOpenContactModal} />
-        <FAQ />
-        <FinalCTA onOpenContactModal={handleOpenContactModal} />
+        <FAQ onOpenContactModal={handleOpenContactModal} />
       </main>
 
       <Footer onOpenContactModal={handleOpenContactModal} />

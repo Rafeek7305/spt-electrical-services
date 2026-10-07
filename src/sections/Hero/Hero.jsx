@@ -9,8 +9,7 @@ import './Hero.css';
 
 export const Hero = ({ onOpenContactModal }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [resetToken, setResetToken] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -51,27 +50,27 @@ export const Hero = ({ onOpenContactModal }) => {
 
   const goToSlide = (targetIndex) => {
     setActiveIndex(targetIndex);
-    setResetToken((prev) => prev + 1);
+    setResetKey((prev) => prev + 1);
   };
 
   const nextSlide = () => {
-    goToSlide((activeIndex + 1) % totalSlides);
+    setActiveIndex((prev) => (prev + 1) % totalSlides);
+    setResetKey((prev) => prev + 1);
   };
 
   const prevSlide = () => {
-    goToSlide((activeIndex - 1 + totalSlides) % totalSlides);
+    setActiveIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setResetKey((prev) => prev + 1);
   };
 
-  // Autoplay timer with clean interval reset on click or swipe
+  // Autoplay: Automatically change card and background every 2 seconds (2000ms)
   useEffect(() => {
-    if (isPaused) return;
-
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % totalSlides);
-    }, 3200);
+    }, 2000);
 
     return () => clearInterval(timer);
-  }, [isPaused, resetToken, totalSlides]);
+  }, [resetKey, totalSlides]);
 
   // Touch Swipe Handlers
   const handleTouchStart = (e) => {
@@ -96,7 +95,7 @@ export const Hero = ({ onOpenContactModal }) => {
 
   // Synchronized 3-Card Carousel Position Calculator
   const getCardPositionStyle = (index) => {
-    let diff = index - activeIndex;
+    let diff = (index - activeIndex) % totalSlides;
     if (diff < -1) diff += totalSlides;
     if (diff > 2) diff -= totalSlides;
 
@@ -107,25 +106,28 @@ export const Hero = ({ onOpenContactModal }) => {
         zIndex: 10,
         opacity: 1,
         filter: 'brightness(1)',
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        visibility: 'visible'
       };
-    } else if (diff === 1 || diff === -3) {
+    } else if (diff === 1 || diff === -(totalSlides - 1)) {
       // RIGHT PARTIAL CARD
       return {
         transform: 'translateX(250px) scale(0.82) rotateY(-8deg) translateZ(-40px)',
         zIndex: 5,
         opacity: 0.75,
         filter: 'brightness(0.75)',
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        visibility: 'visible'
       };
-    } else if (diff === -1 || diff === 3) {
+    } else if (diff === -1 || diff === (totalSlides - 1)) {
       // LEFT PARTIAL CARD
       return {
         transform: 'translateX(-220px) scale(0.82) rotateY(8deg) translateZ(-40px)',
         zIndex: 5,
         opacity: 0.75,
         filter: 'brightness(0.75)',
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        visibility: 'visible'
       };
     }
 
@@ -133,7 +135,8 @@ export const Hero = ({ onOpenContactModal }) => {
       transform: 'translateX(450px) scale(0.6) translateZ(-100px)',
       zIndex: 1,
       opacity: 0,
-      pointerEvents: 'none'
+      pointerEvents: 'none',
+      visibility: 'hidden'
     };
   };
 
@@ -141,8 +144,6 @@ export const Hero = ({ onOpenContactModal }) => {
     <section 
       id="home" 
       className="hero-sync-section"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Dynamic Backgrounds Stage - Changes in 100% Sync with Active Card */}
       <div className="hero-bg-stage">
@@ -165,8 +166,8 @@ export const Hero = ({ onOpenContactModal }) => {
           </div>
 
           <h1 className="hero-sync-headline">
-            Reliable<br />
-            Electrical Work.<br />
+            Reliable <br className="hero-br-desktop" />
+            Electrical Work. <br className="hero-br-desktop" />
             <span className="gold-text-accent">Done Right.</span>
           </h1>
 
@@ -253,6 +254,7 @@ export const Hero = ({ onOpenContactModal }) => {
                             nextSlide();
                           }}
                           aria-label="Next slide"
+                          type="button"
                         >
                           <IconChevronRight size={20} />
                         </button>
@@ -270,6 +272,7 @@ export const Hero = ({ onOpenContactModal }) => {
               className="sync-ctrl-btn prev-btn" 
               onClick={prevSlide}
               aria-label="Previous slide"
+              type="button"
             >
               <IconChevronLeft size={18} />
             </button>
@@ -279,8 +282,7 @@ export const Hero = ({ onOpenContactModal }) => {
               <div className="sync-progress-track">
                 <div 
                   className="sync-progress-gold"
-                  key={`${activeIndex}-${resetToken}`}
-                  style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
+                  key={`progress-${activeIndex}-${resetKey}`}
                 ></div>
               </div>
               <span className="sync-count-total">0{totalSlides}</span>
@@ -290,6 +292,7 @@ export const Hero = ({ onOpenContactModal }) => {
               className="sync-ctrl-btn next-btn" 
               onClick={nextSlide}
               aria-label="Next slide"
+              type="button"
             >
               <IconChevronRight size={18} />
             </button>
