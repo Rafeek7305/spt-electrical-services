@@ -158,13 +158,13 @@ export const AboutPreview = ({ onOpenContactModal }) => {
               <IconArrowRight size={18} />
             </button>
 
-            <a href="tel:+919876543210" className="about-phone-link">
+            <a href="tel:+919486939201" className="about-phone-link">
               <div className="phone-icon-circle">
                 <IconPhone size={16} />
               </div>
               <div>
                 <span className="phone-subtext">Direct Line</span>
-                <strong className="phone-number">+91 98765 43210</strong>
+                <strong className="phone-number">+91 94869 39201</strong>
               </div>
             </a>
           </div>

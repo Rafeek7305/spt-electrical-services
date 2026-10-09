@@ -31,7 +31,7 @@ export const FinalCTA = ({ onOpenContactModal }) => {
               </button>
 
               <a 
-                href="https://wa.me/?text=Hello%20S.P.T.%20Electrical%20Services,%20I%20need%20electrical%20assistance." 
+                href="https://wa.me/919486939201?text=Hello%20S.P.T.%20Electrical%20Services,%20I%20need%20electrical%20assistance." 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="btn btn-outline-white cta-btn-sub"

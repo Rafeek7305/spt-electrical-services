@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Projects Page Styling
+   Reuses base styles and breadcrumb components from Services Page
+   ========================================================================== */
+
+@import '../Services/ServicesPage.css';
+
+.projects-page-root {
+  min-height: 100vh;
+  background: #070B16;
+  color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-main-content {
+  flex: 1;
+  padding-top: 5rem;
+}
+
+.pj-grid-section {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border-bottom: 1px solid #CBD5E1;
+  color: #0F172A;
+}
+
+.pj-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.pj-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.pj-card:hover {
+  border-color: #F59E0B;
+  box-shadow: 0 24px 50px rgba(245, 158, 11, 0.22), 0 10px 25px rgba(15, 23, 42, 0.08);
+  transform: translateY(-6px);
+}
+
+.pj-card-img-wrap {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.pj-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.pj-card:hover .pj-card-img {
+  transform: scale(1.04);
+}
+
+.pj-card-chip {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #FBBF24;
+  font-size: 0.775rem;
+  font-weight: 800;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pj-card-body {
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pj-card-loc {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #B45309;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.45rem;
+}
+
+.pj-card-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #0F172A;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+.pj-card-desc {
+  font-size: 0.935rem;
+  color: #334155;
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 1.35rem;
+}
+
+.pj-card-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid #E2E8F0;
+  margin-bottom: 1.5rem;
+}
+
+.pj-spec-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+.pj-check-gold {
+  color: #D97706;
+  flex-shrink: 0;
+}
+
+.pj-card-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: #0F172A;
+  border: 1px solid #0F172A;
+  color: #FFFFFF;
+  font-size: 0.885rem;
+  font-weight: 800;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+  transition: all 0.25s ease;
+  margin-top: auto;
+}
+
+.pj-card:hover .pj-card-btn {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #070B16;
+  border-color: #F59E0B;
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.45);
+}
+
+@media (max-width: 992px) {
+  .pj-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .pj-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pj-grid-section {
+    padding: 4rem 0;
+  }
+}

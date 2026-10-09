@@ -1,0 +1,225 @@
+/* ==========================================================================
+   About Us Page Styling
+   Reuses base styles and breadcrumb components from Services Page
+   ========================================================================== */
+
+@import '../Services/ServicesPage.css';
+
+.about-page-root {
+  min-height: 100vh;
+  background: #070B16;
+  color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-main-content {
+  flex: 1;
+  padding-top: 5rem;
+}
+
+/* ==========================================================================
+   SECTION 2: ABOUT US INTRODUCTION
+   ========================================================================== */
+
+.ab-intro-section {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border-bottom: 1px solid #CBD5E1;
+  color: #0F172A;
+}
+
+.ab-intro-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.ab-sub-eyebrow {
+  display: inline-block;
+  color: #B45309;
+  font-size: 0.775rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.ab-intro-heading {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.35rem;
+}
+
+.ab-intro-paragraph {
+  font-size: 1.05rem;
+  color: #334155;
+  line-height: 1.7;
+  margin-bottom: 1.15rem;
+  font-weight: 500;
+}
+
+.ab-intro-action {
+  margin-top: 2rem;
+}
+
+.ab-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #070B16;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.9rem 1.85rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ab-btn-primary:hover {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.55);
+}
+
+.ab-image-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1.5px solid #E2E8F0;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.ab-image-frame:hover {
+  transform: translateY(-4px);
+}
+
+.ab-main-img {
+  width: 100%;
+  height: 420px;
+  display: block;
+  object-fit: cover;
+}
+
+.ab-image-badge {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 14px;
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.ab-badge-icon {
+  color: #FBBF24;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   SECTION 3: OUR APPROACH
+   ========================================================================== */
+
+.ab-approach-section {
+  padding: 6rem 0;
+  background: #070B16;
+}
+
+.ab-approach-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.ab-approach-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.25rem 1.75rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ab-approach-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ab-card-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #FBBF24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.35rem;
+}
+
+.ab-card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+}
+
+.ab-card-desc {
+  font-size: 0.95rem;
+  color: #94A3B8;
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  .ab-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .ab-approach-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .ab-main-img {
+    height: 350px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ab-intro-heading {
+    font-size: 2.1rem;
+  }
+
+  .ab-main-img {
+    height: 280px;
+  }
+
+  .ab-intro-section,
+  .ab-approach-section {
+    padding: 4rem 0;
+  }
+}
