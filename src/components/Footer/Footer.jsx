@@ -1,24 +1,50 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logoImg from '../../assets/logo/logo.png';
 import { IconZap, IconPhone, IconWhatsApp, IconMapPin, IconArrowUpRight, IconClock, IconShieldCheck } from '../common/Icons';
 import './Footer.css';
 
 export const Footer = ({ onOpenContactModal }) => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleNavClick = (e, href) => {
+  const handleNavClick = (e, href, id = '') => {
     e.preventDefault();
-    const targetId = href.replace('#', '');
-    const element = document.getElementById(targetId);
-    if (element) {
-      const headerOffset = 70;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const targetId = id || href.replace('#', '');
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    if (href === '/services' || targetId === 'services') {
+      if (location.pathname !== '/services') {
+        navigate('/services');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (targetId === 'home' || href === '/') {
+      if (location.pathname !== '/') {
+        navigate('/');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: targetId } });
+    } else {
+      const element = document.getElementById(targetId);
+      if (element) {
+        const headerOffset = 70;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
     }
   };
 
@@ -52,12 +78,12 @@ export const Footer = ({ onOpenContactModal }) => {
               <div className="footer-title-bar"></div>
             </h4>
             <ul className="footer-links">
-              <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')}>Home</a></li>
-              <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Services</a></li>
-              <li><a href="#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</a></li>
-              <li><a href="#gallery" onClick={(e) => handleNavClick(e, '#gallery')}>Work Gallery</a></li>
-              <li><a href="#process" onClick={(e) => handleNavClick(e, '#process')}>Our Process</a></li>
-              <li><a href="#faq" onClick={(e) => handleNavClick(e, '#faq')}>FAQ</a></li>
+              <li><a href="/" onClick={(e) => handleNavClick(e, '/', 'home')}>Home</a></li>
+              <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Services</a></li>
+              <li><a href="#about" onClick={(e) => handleNavClick(e, '#about', 'about')}>About Us</a></li>
+              <li><a href="#gallery" onClick={(e) => handleNavClick(e, '#gallery', 'gallery')}>Work Gallery</a></li>
+              <li><a href="#process" onClick={(e) => handleNavClick(e, '#process', 'process')}>Our Process</a></li>
+              <li><a href="#faq" onClick={(e) => handleNavClick(e, '#faq', 'faq')}>FAQ</a></li>
             </ul>
           </div>
 
@@ -68,11 +94,11 @@ export const Footer = ({ onOpenContactModal }) => {
               <div className="footer-title-bar"></div>
             </h4>
             <ul className="footer-links">
-              <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Electrical Installation</a></li>
-              <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Wiring & Rewiring</a></li>
-              <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Circuit Diagnostics</a></li>
-              <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Lighting Installation</a></li>
-              <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Panel & Breaker Work</a></li>
+              <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Electrical Installation</a></li>
+              <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Wiring & Rewiring</a></li>
+              <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Circuit Diagnostics</a></li>
+              <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Lighting Installation</a></li>
+              <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Panel & Breaker Work</a></li>
             </ul>
           </div>
 

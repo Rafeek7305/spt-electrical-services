@@ -10,44 +10,44 @@ import {
 } from '../../components/common/Icons';
 import './FAQ.css';
 
+const FAQS_DATA = [
+  {
+    num: '01',
+    category: 'Capabilities',
+    q: 'What electrical services do you provide?',
+    a: 'We provide end-to-end residential, commercial, and industrial electrical solutions including new power rough-ins, property rewiring, 3-phase main distribution panel upgrades, architectural LED lighting design, and precision fault diagnostics.'
+  },
+  {
+    num: '02',
+    category: 'Quotation & Booking',
+    q: 'How can I request an electrical service or quotation?',
+    a: 'You can request service through our online form or by calling our technical desk directly. We perform an initial requirement review and dispatch a certified technician for on-site load evaluation and transparent upfront pricing.'
+  },
+  {
+    num: '03',
+    category: 'Project Types',
+    q: 'Do you handle both residential and commercial electrical projects?',
+    a: 'Yes. We cater to independent villas, residential apartment complexes, corporate offices, retail showrooms, healthcare centers, and light industrial manufacturing facilities.'
+  },
+  {
+    num: '04',
+    category: 'Safety & Codes',
+    q: 'What safety standards do you follow during electrical work?',
+    a: 'We strictly adhere to updated national safety regulations, utilizing flame-retardant copper conductors, proper conduit protection, RCCB/ELCB shock-protection breakers, and thorough earth continuity testing prior to power activation.'
+  },
+  {
+    num: '05',
+    category: 'Response Times',
+    q: 'How quickly can a technician respond to an electrical inquiry?',
+    a: 'We prioritize rapid turnaround. For standard inquiries, our team coordinates an on-site visit within 24 hours. For critical circuit trips or safety hazards, our emergency team provides rapid local dispatch.'
+  }
+];
+
 export const FAQ = ({ onOpenContactModal }) => {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const faqs = [
-    {
-      num: '01',
-      category: 'Capabilities',
-      q: 'What electrical services do you provide?',
-      a: 'We provide end-to-end residential, commercial, and industrial electrical solutions including new power rough-ins, property rewiring, 3-phase main distribution panel upgrades, architectural LED lighting design, and precision fault diagnostics.'
-    },
-    {
-      num: '02',
-      category: 'Quotation & Booking',
-      q: 'How can I request an electrical service or quotation?',
-      a: 'You can request service through our online form or by calling our technical desk directly. We perform an initial requirement review and dispatch a certified technician for on-site load evaluation and transparent upfront pricing.'
-    },
-    {
-      num: '03',
-      category: 'Project Types',
-      q: 'Do you handle both residential and commercial electrical projects?',
-      a: 'Yes. We cater to independent villas, residential apartment complexes, corporate offices, retail showrooms, healthcare centers, and light industrial manufacturing facilities.'
-    },
-    {
-      num: '04',
-      category: 'Safety & Codes',
-      q: 'What safety standards do you follow during electrical work?',
-      a: 'We strictly adhere to updated national safety regulations, utilizing flame-retardant copper conductors, proper conduit protection, RCCB/ELCB shock-protection breakers, and thorough earth continuity testing prior to power activation.'
-    },
-    {
-      num: '05',
-      category: 'Response Times',
-      q: 'How quickly can a technician respond to an electrical inquiry?',
-      a: 'We prioritize rapid turnaround. For standard inquiries, our team coordinates an on-site visit within 24 hours. For critical circuit trips or safety hazards, our emergency team provides rapid local dispatch.'
-    }
-  ];
-
   const toggleAccordion = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   return (
@@ -76,7 +76,7 @@ export const FAQ = ({ onOpenContactModal }) => {
 
         {/* Modern Glassmorphic Accordion List */}
         <div className="faq-accordion-stack">
-          {faqs.map((faq, index) => {
+          {FAQS_DATA.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div 

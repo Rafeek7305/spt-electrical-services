@@ -48,15 +48,16 @@
 }
 
 .footer-logo {
-  height: 50px;
+  height: 72px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
 }
 
 .footer-brand-desc {
-  color: #64748B;
+  color: #334155;
   font-size: 0.935rem;
+  font-weight: 500;
   line-height: 1.7;
   margin-bottom: 1.5rem;
   max-width: 320px;
@@ -109,9 +110,9 @@
 }
 
 .footer-links a {
-  color: #64748B;
+  color: #1E293B;
   font-size: 0.935rem;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-block;
@@ -119,22 +120,23 @@
 
 .footer-links a:hover {
   color: #D97706;
-  font-weight: 700;
+  font-weight: 800;
   transform: translateX(5px);
 }
 
 /* Inquiry Box Card */
 .footer-inquiry-box {
   background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #CBD5E1;
   border-radius: 20px;
   padding: 1.5rem;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .footer-contact-text {
-  color: #64748B;
+  color: #334155;
   font-size: 0.885rem;
+  font-weight: 500;
   line-height: 1.6;
   margin-bottom: 1.25rem;
 }
@@ -204,8 +206,9 @@
 }
 
 .copyright-text {
-  color: #64748B;
+  color: #334155;
   font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .copyright-bold {

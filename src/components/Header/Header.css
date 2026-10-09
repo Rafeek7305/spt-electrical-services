@@ -48,14 +48,14 @@
 }
 
 .header-logo {
-  height: 44px;
+  height: 60px;
   width: auto;
   object-fit: contain;
   transition: height var(--transition-normal);
 }
 
 .header-scrolled .header-logo {
-  height: 38px;
+  height: 50px;
 }
 
 /* Desktop Navigation Links */
@@ -213,7 +213,7 @@
 }
 
 .mobile-logo {
-  height: 42px;
+  height: 56px;
   width: auto;
   object-fit: contain;
 }
@@ -392,7 +392,7 @@
     top: 0.65rem;
   }
   .header-logo {
-    height: 38px;
+    height: 50px;
   }
   .mobile-toggle-btn {
     width: 40px;
