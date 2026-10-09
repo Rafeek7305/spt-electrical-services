@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Header } from '../../components/Header/Header';
 import { Hero } from '../../sections/Hero/Hero';
 import { Services } from '../../sections/Services/Services';
@@ -16,6 +17,22 @@ import './Home.css';
 export const Home = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const targetId = location.state.scrollTo;
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => {
+          const headerOffset = 70;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location]);
 
   const handleOpenContactModal = (serviceName = '') => {
     setSelectedService(serviceName);

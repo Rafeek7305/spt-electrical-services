@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logoImg from '../../assets/logo/logo.png';
 import { 
   IconMenu, 
@@ -15,6 +16,9 @@ export const Header = ({ onOpenContactModal }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isServicesPage = location.pathname === '/services';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,8 +28,12 @@ export const Header = ({ onOpenContactModal }) => {
         setIsScrolled(false);
       }
 
-      // Simple active link tracker on scroll
-      const sections = ['home', 'services', 'about', 'gallery', 'process', 'faq'];
+      if (isServicesPage) {
+        setActiveSection('services');
+        return;
+      }
+
+      const sections = ['home', 'services', 'about', 'gallery', 'contact'];
       const scrollPosition = window.scrollY + 140;
 
       for (const sectionId of sections) {
@@ -43,7 +51,7 @@ export const Header = ({ onOpenContactModal }) => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isServicesPage]);
 
   // Prevent background scroll when mobile menu is open
   useEffect(() => {
@@ -64,28 +72,49 @@ export const Header = ({ onOpenContactModal }) => {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { label: 'Home', href: '#home', id: 'home' },
-    { label: 'Services', href: '#services', id: 'services' },
-    { label: 'About', href: '#about', id: 'about' },
-    { label: 'Gallery', href: '#gallery', id: 'gallery' },
-    { label: 'Process', href: '#process', id: 'process' },
-    { label: 'FAQ', href: '#faq', id: 'faq' }
+    { label: 'Home', href: '/', id: 'home' },
+    { label: 'Services', href: '/services', id: 'services' },
+    { label: 'About Us', href: '#about', id: 'about' },
+    { label: 'Projects', href: '#gallery', id: 'gallery' },
+    { label: 'Contact', href: '#contact', id: 'contact' }
   ];
 
-  const handleNavClick = (e, href) => {
+  const handleNavClick = (e, href, id) => {
     e.preventDefault();
     setMobileMenuOpen(false);
-    const targetId = href.replace('#', '');
-    const element = document.getElementById(targetId);
-    if (element) {
-      const headerOffset = 70;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    if (id === 'services' || href === '/services') {
+      if (location.pathname !== '/services') {
+        navigate('/services');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (id === 'home' || href === '/') {
+      if (location.pathname !== '/') {
+        navigate('/');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: id } });
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        const headerOffset = 70;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
     }
   };
 
@@ -94,7 +123,7 @@ export const Header = ({ onOpenContactModal }) => {
       <header className={`site-header ${isScrolled ? 'header-scrolled' : ''}`}>
         <div className="container header-container">
           {/* Brand Logo */}
-          <a href="#home" className="header-logo-link" onClick={(e) => handleNavClick(e, '#home')}>
+          <a href="/" className="header-logo-link" onClick={(e) => handleNavClick(e, '/', 'home')}>
             <img 
               src={logoImg} 
               alt="S.P.T. Electrical Services Logo" 
@@ -110,7 +139,7 @@ export const Header = ({ onOpenContactModal }) => {
                   <a
                     href={link.href}
                     className={`nav-link ${activeSection === link.id ? 'active' : ''}`}
-                    onClick={(e) => handleNavClick(e, link.href)}
+                    onClick={(e) => handleNavClick(e, link.href, link.id)}
                   >
                     {link.label}
                   </a>
@@ -160,7 +189,7 @@ export const Header = ({ onOpenContactModal }) => {
       >
         {/* Drawer Header */}
         <div className="mobile-nav-header">
-          <a href="#home" className="drawer-logo-wrap" onClick={(e) => handleNavClick(e, '#home')}>
+          <a href="/" className="drawer-logo-wrap" onClick={(e) => handleNavClick(e, '/', 'home')}>
             <img src={logoImg} alt="S.P.T. Electrical Services" className="mobile-logo" />
           </a>
           
@@ -183,7 +212,7 @@ export const Header = ({ onOpenContactModal }) => {
                 key={link.id}
                 href={link.href}
                 className={`mobile-nav-link ${isActive ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, link.href)}
+                onClick={(e) => handleNavClick(e, link.href, link.id)}
                 style={{ '--delay': `${idx * 0.04}s` }}
               >
                 <span className="mobile-nav-text">{link.label}</span>
