@@ -463,7 +463,7 @@ export const ServicesPage = () => {
                   </button>
 
                   <a 
-                    href="https://wa.me/919876543210?text=Hi%2C%20I%20have%20an%20electrical%20service%20inquiry." 
+                    href="https://wa.me/919486939201?text=Hi%2C%20I%20have%20an%20electrical%20service%20inquiry." 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="sp-cta-whatsapp-btn"

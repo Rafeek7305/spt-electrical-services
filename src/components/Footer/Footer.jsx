@@ -22,6 +22,15 @@ export const Footer = ({ onOpenContactModal }) => {
       return;
     }
 
+    if (href === '/about' || targetId === 'about') {
+      if (location.pathname !== '/about') {
+        navigate('/about');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
     if (targetId === 'home' || href === '/') {
       if (location.pathname !== '/') {
         navigate('/');
@@ -80,7 +89,7 @@ export const Footer = ({ onOpenContactModal }) => {
             <ul className="footer-links">
               <li><a href="/" onClick={(e) => handleNavClick(e, '/', 'home')}>Home</a></li>
               <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Services</a></li>
-              <li><a href="#about" onClick={(e) => handleNavClick(e, '#about', 'about')}>About Us</a></li>
+              <li><a href="/about" onClick={(e) => handleNavClick(e, '/about', 'about')}>About Us</a></li>
               <li><a href="#gallery" onClick={(e) => handleNavClick(e, '#gallery', 'gallery')}>Work Gallery</a></li>
               <li><a href="#process" onClick={(e) => handleNavClick(e, '#process', 'process')}>Our Process</a></li>
               <li><a href="#faq" onClick={(e) => handleNavClick(e, '#faq', 'faq')}>FAQ</a></li>
@@ -123,7 +132,7 @@ export const Footer = ({ onOpenContactModal }) => {
               </button>
 
               <a 
-                href="https://wa.me/919876543210?text=Hello%20S.P.T.%20Electrical%20Services," 
+                href="https://wa.me/919486939201?text=Hello%20S.P.T.%20Electrical%20Services," 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="footer-whatsapp-link"

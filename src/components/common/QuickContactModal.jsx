@@ -45,7 +45,7 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
             </div>
 
             <div className="modal-quick-actions">
-              <a href="tel:+919000000000" className="quick-action-btn call-action">
+              <a href="tel:+919486939201" className="quick-action-btn call-action">
                 <IconPhone size={18} />
                 <div>
                   <span className="action-label">Call Now</span>
@@ -53,7 +53,7 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                 </div>
               </a>
               <a 
-                href="https://wa.me/?text=Hello%20S.P.T.%20Electrical%20Services,%20I%20would%20like%20to%20inquire%20about%20your%20electrical%20services." 
+                href="https://wa.me/919486939201?text=Hello%20S.P.T.%20Electrical%20Services,%20I%20would%20like%20to%20inquire%20about%20your%20electrical%20services." 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="quick-action-btn whatsapp-action"

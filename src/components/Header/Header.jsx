@@ -15,43 +15,28 @@ import './Header.css';
 export const Header = ({ onOpenContactModal }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
   const navigate = useNavigate();
   const location = useLocation();
-  const isServicesPage = location.pathname === '/services';
+
+  // Active section is strictly based on current page route, NOT scroll position
+  const getActiveSection = () => {
+    if (location.pathname === '/services') return 'services';
+    if (location.pathname === '/about') return 'about';
+    if (location.pathname === '/projects') return 'projects';
+    if (location.pathname === '/contact') return 'contact';
+    if (location.pathname === '/') return 'home';
+    return '';
+  };
+  const activeSection = getActiveSection();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-
-      if (isServicesPage) {
-        setActiveSection('services');
-        return;
-      }
-
-      const sections = ['home', 'services', 'about', 'gallery', 'contact'];
-      const scrollPosition = window.scrollY + 140;
-
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
-      }
+      setIsScrolled(window.scrollY > 30);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isServicesPage]);
+  }, []);
 
   // Prevent background scroll when mobile menu is open
   useEffect(() => {
@@ -74,9 +59,9 @@ export const Header = ({ onOpenContactModal }) => {
   const navLinks = [
     { label: 'Home', href: '/', id: 'home' },
     { label: 'Services', href: '/services', id: 'services' },
-    { label: 'About Us', href: '#about', id: 'about' },
-    { label: 'Projects', href: '#gallery', id: 'gallery' },
-    { label: 'Contact', href: '#contact', id: 'contact' }
+    { label: 'About Us', href: '/about', id: 'about' },
+    { label: 'Projects', href: '/projects', id: 'projects' },
+    { label: 'Contact', href: '/contact', id: 'contact' }
   ];
 
   const handleNavClick = (e, href, id) => {
@@ -86,6 +71,33 @@ export const Header = ({ onOpenContactModal }) => {
     if (id === 'services' || href === '/services') {
       if (location.pathname !== '/services') {
         navigate('/services');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (id === 'about' || href === '/about') {
+      if (location.pathname !== '/about') {
+        navigate('/about');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (id === 'projects' || href === '/projects' || id === 'gallery') {
+      if (location.pathname !== '/projects') {
+        navigate('/projects');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (id === 'contact' || href === '/contact') {
+      if (location.pathname !== '/contact') {
+        navigate('/contact');
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -115,6 +127,15 @@ export const Header = ({ onOpenContactModal }) => {
           behavior: 'smooth'
         });
       }
+    }
+  };
+
+  const handleCtaClick = () => {
+    setMobileMenuOpen(false);
+    if (location.pathname !== '/contact') {
+      navigate('/contact');
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -152,7 +173,7 @@ export const Header = ({ onOpenContactModal }) => {
           <div className="header-actions">
             <button 
               className="btn btn-primary header-cta" 
-              onClick={() => onOpenContactModal && onOpenContactModal()}
+              onClick={handleCtaClick}
               type="button"
             >
               <IconZap size={16} />
@@ -233,10 +254,7 @@ export const Header = ({ onOpenContactModal }) => {
 
           <button 
             className="mobile-cta-btn"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              if (onOpenContactModal) onOpenContactModal('Mobile Menu CTA');
-            }}
+            onClick={handleCtaClick}
             type="button"
           >
             <IconZap size={18} />
@@ -244,7 +262,7 @@ export const Header = ({ onOpenContactModal }) => {
           </button>
 
           <a 
-            href="https://wa.me/919876543210?text=Hi%2C%20I%20have%20an%20electrical%20service%20inquiry." 
+            href="https://wa.me/919486939201?text=Hi%2C%20I%20have%20an%20electrical%20service%20inquiry." 
             target="_blank" 
             rel="noopener noreferrer" 
             className="mobile-drawer-whatsapp"

@@ -1,0 +1,396 @@
+/* ==========================================================================
+   Contact Us Page Styling
+   Reuses base styles and breadcrumb components from Services Page
+   ========================================================================== */
+
+@import '../Services/ServicesPage.css';
+
+.contact-page-root {
+  min-height: 100vh;
+  background: #070B16;
+  color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-main-content {
+  flex: 1;
+  padding-top: 5rem;
+}
+
+/* ==========================================================================
+   MAIN CONTACT SECTION (2-Column Layout)
+   ========================================================================== */
+
+.ct-main-section {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border-bottom: 1px solid #CBD5E1;
+  color: #0F172A;
+}
+
+.ct-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.ct-sub-eyebrow {
+  display: inline-block;
+  color: #B45309;
+  font-size: 0.775rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.ct-info-heading {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.ct-info-desc {
+  font-size: 1.05rem;
+  color: #334155;
+  line-height: 1.7;
+  margin-bottom: 2.25rem;
+  font-weight: 500;
+}
+
+.ct-info-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.ct-info-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ct-info-block:hover {
+  transform: translateY(-2px);
+  border-color: #F59E0B;
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15);
+}
+
+.ct-block-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border: 1px solid #FDE68A;
+  color: #D97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ct-whatsapp-icon-bg {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10B981;
+}
+
+.ct-block-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 0.35rem;
+}
+
+.ct-block-text {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 0.45rem;
+}
+
+.ct-block-link {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #D97706;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ct-block-link:hover {
+  color: #B45309;
+}
+
+.ct-whatsapp-link {
+  color: #10B981;
+}
+
+.ct-whatsapp-link:hover {
+  color: #059669;
+}
+
+/* Helpful Service-Request Panel */
+.ct-service-panel {
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 20px;
+  padding: 1.85rem;
+  color: #FFFFFF;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+}
+
+.ct-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.ct-panel-icon {
+  color: #FBBF24;
+}
+
+.ct-panel-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.ct-panel-text {
+  font-size: 0.925rem;
+  color: #CBD5E1;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.ct-panel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #FBBF24;
+  font-size: 0.885rem;
+  font-weight: 800;
+  padding: 0.65rem 1.15rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.ct-panel-btn:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #070B16;
+  border-color: #F59E0B;
+  transform: translateY(-2px);
+}
+
+/* RIGHT SIDE: Contact Form Card */
+.ct-form-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 24px;
+  padding: 2.5rem 2.25rem;
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08);
+}
+
+.ct-form-header {
+  margin-bottom: 1.75rem;
+}
+
+.ct-form-title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #0F172A;
+  margin-bottom: 0.45rem;
+}
+
+.ct-form-subtitle {
+  font-size: 0.95rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.ct-form-alert {
+  padding: 0.85rem 1.15rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 1.35rem;
+}
+
+.ct-form-alert.error {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #DC2626;
+}
+
+.ct-form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ct-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.ct-label {
+  font-size: 0.885rem;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.req-star {
+  color: #DC2626;
+}
+
+.opt-tag {
+  color: #64748B;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.ct-input,
+.ct-select,
+.ct-textarea {
+  width: 100%;
+  background: #F8FAFC;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  color: #0F172A;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.ct-input:focus,
+.ct-select:focus,
+.ct-textarea:focus {
+  background: #FFFFFF;
+  border-color: #F59E0B;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
+}
+
+.ct-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #070B16;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 0.95rem 1.5rem;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.4);
+  transition: all 0.25s ease;
+  margin-top: 0.5rem;
+}
+
+.ct-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.6);
+}
+
+.ct-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Success Card */
+.ct-success-card {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.ct-success-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #FEF3C7;
+  color: #D97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.35rem auto;
+}
+
+.ct-success-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #0F172A;
+  margin-bottom: 0.65rem;
+}
+
+.ct-success-text {
+  font-size: 1rem;
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.ct-success-subtext {
+  font-size: 0.9rem;
+  color: #64748B;
+  margin-bottom: 2rem;
+}
+
+.ct-reset-btn {
+  background: #0F172A;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ct-reset-btn:hover {
+  background: #1E293B;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .ct-main-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .ct-info-heading {
+    font-size: 2.1rem;
+  }
+
+  .ct-form-card {
+    padding: 1.75rem 1.35rem;
+  }
+
+  .ct-main-section {
+    padding: 4rem 0;
+  }
+}

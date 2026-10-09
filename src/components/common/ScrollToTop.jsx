@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IconArrowUp } from './Icons';
+import { IconArrowUp, IconWhatsApp } from './Icons';
 import './ScrollToTop.css';
 
 export const ScrollToTop = () => {
@@ -17,7 +17,7 @@ export const ScrollToTop = () => {
         setScrollProgress(progress);
       }
 
-      // Show button after scrolling 300px
+      // Show scroll-to-top button after scrolling 300px
       if (scrollTop > 300) {
         setIsVisible(true);
       } else {
@@ -46,42 +46,61 @@ export const ScrollToTop = () => {
   const strokeDashoffset = circumference - (scrollProgress / 100) * circumference;
 
   return (
-    <button
-      type="button"
-      className={`scroll-to-top-btn ${isVisible ? 'is-visible' : ''}`}
-      onClick={scrollToTop}
-      aria-label="Scroll back to top of page"
-      title="Scroll to top"
-    >
-      {/* Dynamic Circular Progress Meter */}
-      <svg className="scroll-progress-ring" width="54" height="54" viewBox="0 0 54 54">
-        {/* Track Background */}
-        <circle
-          className="progress-ring-track"
-          cx="27"
-          cy="27"
-          r={radius}
-        />
-        {/* Active Golden Progress Stroke */}
-        <circle
-          className="progress-ring-indicator"
-          cx="27"
-          cy="27"
-          r={radius}
-          style={{
-            strokeDasharray: circumference,
-            strokeDashoffset: strokeDashoffset
-          }}
-        />
-      </svg>
+    <div className={`floating-actions-container ${isVisible ? 'has-scroll-top' : ''}`}>
+      {/* Floating WhatsApp Action Button */}
+      <a
+        href="https://wa.me/919486939201?text=Hi%2C%20I%20have%20an%20electrical%20service%20inquiry."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="floating-whatsapp-btn"
+        aria-label="Chat with S.P.T. Electrical Services on WhatsApp"
+        title="Chat on WhatsApp"
+      >
+        <span className="whatsapp-tooltip">Chat on WhatsApp</span>
+        <div className="whatsapp-icon-core">
+          <IconWhatsApp size={24} />
+        </div>
+        <span className="whatsapp-pulse-aura"></span>
+      </a>
 
-      {/* Center Arrow Icon & Core */}
-      <div className="scroll-top-icon-core">
-        <IconArrowUp size={20} className="scroll-arrow-icon" />
-      </div>
+      {/* Floating Scroll To Top Button */}
+      <button
+        type="button"
+        className={`scroll-to-top-btn ${isVisible ? 'is-visible' : ''}`}
+        onClick={scrollToTop}
+        aria-label="Scroll back to top of page"
+        title="Scroll to top"
+      >
+        {/* Dynamic Circular Progress Meter */}
+        <svg className="scroll-progress-ring" width="54" height="54" viewBox="0 0 54 54">
+          {/* Track Background */}
+          <circle
+            className="progress-ring-track"
+            cx="27"
+            cy="27"
+            r={radius}
+          />
+          {/* Active Golden Progress Stroke */}
+          <circle
+            className="progress-ring-indicator"
+            cx="27"
+            cy="27"
+            r={radius}
+            style={{
+              strokeDasharray: circumference,
+              strokeDashoffset: strokeDashoffset
+            }}
+          />
+        </svg>
 
-      {/* Ambient Pulsing Aura */}
-      <span className="scroll-btn-glow"></span>
-    </button>
+        {/* Center Arrow Icon & Core */}
+        <div className="scroll-top-icon-core">
+          <IconArrowUp size={20} className="scroll-arrow-icon" />
+        </div>
+
+        {/* Ambient Pulsing Aura */}
+        <span className="scroll-btn-glow"></span>
+      </button>
+    </div>
   );
 };
