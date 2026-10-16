@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SEO } from '../../components/common/SEO';
 
@@ -23,15 +23,14 @@ const contactBreadcrumbSchema = {
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
+import { sendEnquiryEmail } from '../../services/emailService';
 import { 
   IconZap, 
   IconShieldCheck, 
   IconCheckCircle, 
   IconPhone, 
   IconWhatsApp, 
-  IconArrowRight,
-  IconClock,
-  IconMapPin
+  IconArrowRight
 } from '../../components/common/Icons';
 
 import imgBreadcrumb from '../../assets/images/services/services_breadcrumb.png';
@@ -49,7 +48,8 @@ export const ContactPage = () => {
     email: '',
     service: 'Electrical Installation',
     location: '',
-    message: ''
+    message: '',
+    hp_company: ''
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -76,7 +76,7 @@ export const ContactPage = () => {
     if (formError) setFormError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName.trim() || !formData.phone.trim() || !formData.message.trim()) {
       setFormError('Please fill in all required fields (Full Name, Phone Number, and Message).');
@@ -86,11 +86,28 @@ export const ContactPage = () => {
     setIsSubmitting(true);
     setFormError('');
 
-    // Simulate clean form handling
-    setTimeout(() => {
+    try {
+      const result = await sendEnquiryEmail({
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        service: formData.service,
+        location: formData.location,
+        message: formData.message,
+        formSource: 'Main Contact Page Form',
+        honeypot: formData.hp_company
+      });
+
+      if (result.success) {
+        setFormSubmitted(true);
+      } else {
+        setFormError(result.error || 'Failed to send your enquiry. Please call us directly at +91 94869 39201.');
+      }
+    } catch {
+      setFormError('An unexpected error occurred. Please call +91 94869 39201.');
+    } finally {
       setIsSubmitting(false);
-      setFormSubmitted(true);
-    }, 600);
+    }
   };
 
   const handleResetForm = () => {
@@ -101,8 +118,10 @@ export const ContactPage = () => {
       email: '',
       service: 'Electrical Installation',
       location: '',
-      message: ''
+      message: '',
+      hp_company: ''
     });
+    setFormError('');
   };
 
   return (
@@ -269,6 +288,20 @@ export const ContactPage = () => {
                       )}
 
                       <form onSubmit={handleSubmit} className="ct-form-element" noValidate>
+                        {/* Anti-spam honeypot */}
+                        <div className="hp-field" aria-hidden="true" style={{ display: 'none' }}>
+                          <label htmlFor="ct-hp-company">Leave this empty</label>
+                          <input
+                            id="ct-hp-company"
+                            type="text"
+                            name="hp_company"
+                            value={formData.hp_company}
+                            onChange={handleChange}
+                            tabIndex={-1}
+                            autoComplete="off"
+                          />
+                        </div>
+
                         {/* 1. Full Name (Required) */}
                         <div className="ct-field-group">
                           <label htmlFor="ct-fullName" className="ct-label">

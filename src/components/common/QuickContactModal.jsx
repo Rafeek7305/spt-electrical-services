@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IconX, IconPhone, IconWhatsApp, IconCheckCircle, IconZap } from './Icons';
+import { sendEnquiryEmail } from '../../services/emailService';
 import './QuickContactModal.css';
 
 export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
@@ -7,20 +8,51 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
     name: '',
     phone: '',
     service: defaultService || 'Electrical Installation',
-    notes: ''
+    notes: '',
+    hp_company: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      setFormError('Please enter your Full Name and Phone Number.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormError('');
+
+    try {
+      const result = await sendEnquiryEmail({
+        fullName: formData.name,
+        phone: formData.phone,
+        service: formData.service,
+        message: formData.notes,
+        formSource: 'Quick Contact Modal (Request Electrical Service)',
+        honeypot: formData.hp_company
+      });
+
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setFormError(result.error || 'Failed to submit service request. Please call us at +91 94869 39201.');
+      }
+    } catch {
+      setFormError('An unexpected error occurred. Please call +91 94869 39201.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setSubmitted(false);
-    setFormData({ name: '', phone: '', service: 'Electrical Installation', notes: '' });
+    setFormData({ name: '', phone: '', service: defaultService || 'Electrical Installation', notes: '', hp_company: '' });
+    setFormError('');
     onClose();
   };
 
@@ -70,7 +102,27 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
               <span>Or Send a Message</span>
             </div>
 
-            <form onSubmit={handleSubmit} className="modal-form">
+            {formError && (
+              <div className="modal-alert error" role="alert">
+                {formError}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="modal-form" noValidate>
+              {/* Anti-spam honeypot */}
+              <div className="hp-field" aria-hidden="true" style={{ display: 'none' }}>
+                <label htmlFor="service-hp-company">Leave this empty</label>
+                <input
+                  id="service-hp-company"
+                  type="text"
+                  name="hp_company"
+                  value={formData.hp_company}
+                  onChange={(e) => setFormData({ ...formData, hp_company: e.target.value })}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="form-group">
                 <label htmlFor="service-name">Full Name *</label>
                 <input
@@ -79,7 +131,10 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                   required
                   placeholder="Enter your name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value });
+                    if (formError) setFormError('');
+                  }}
                 />
               </div>
 
@@ -91,7 +146,10 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                   required
                   placeholder="Enter contact number"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, phone: e.target.value });
+                    if (formError) setFormError('');
+                  }}
                 />
               </div>
 
@@ -122,8 +180,12 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                 ></textarea>
               </div>
 
-              <button type="submit" className="btn btn-primary form-submit-btn">
-                <span>Submit Service Request</span>
+              <button 
+                type="submit" 
+                className="btn btn-primary form-submit-btn"
+                disabled={isSubmitting}
+              >
+                <span>{isSubmitting ? 'Submitting Request...' : 'Submit Service Request'}</span>
                 <IconZap size={18} />
               </button>
             </form>
