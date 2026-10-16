@@ -3,21 +3,16 @@
  * Sends customer enquiries to starrabik76@gmail.com via EmailJS REST API.
  * Uses native fetch with zero extra npm dependencies.
  *
- * Core 5 Fields (Required on all forms):
- * 1. Full Name (customer_name)
- * 2. Phone Number (phone)
- * 3. Area / Location (location / area)
- * 4. Service Required (service)
- * 5. Brief Description of Work (message / description)
+ * Security & Anti-Spam:
+ * - Strips CR/LF characters from single-line fields to prevent header injection.
+ * - Honeypot detection to silently drop automated bot spam.
+ * - Uses EmailJS Public Key designed for browser client execution.
+ * - Never logs customer Personal Identifiable Information (PII) in production.
  */
 
-export const DEFAULT_SERVICE_ID = 'service_1s224ki';
-export const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
-export const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
-export const PRIMARY_RECIPIENT_EMAIL = 'starrabik76@gmail.com';
-export const SECONDARY_RECIPIENT_EMAIL = 'S.udaiyar8080@gmail.com';
-export const RECIPIENT_EMAILS = [PRIMARY_RECIPIENT_EMAIL, SECONDARY_RECIPIENT_EMAIL];
-export const RECIPIENT_EMAIL = `${PRIMARY_RECIPIENT_EMAIL}, ${SECONDARY_RECIPIENT_EMAIL}`;
+const DEFAULT_SERVICE_ID = 'service_1s224ki';
+const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
+const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
 
 /**
  * Shared standardized service options across every enquiry form.
@@ -44,11 +39,12 @@ export const sanitizeSingleLine = (str = '') => {
 };
 
 /**
- * Validates sensible Indian phone numbers without incorrectly rejecting valid formats:
+ * Validates Indian mobile numbers:
  * - 10 digits starting with 6, 7, 8, or 9
- * - 11 digits starting with 0 (e.g. 09486939201)
- * - 12 digits starting with country code 91 (e.g. +91 94869 39201, 919486939201)
- * - Allows spaces, hyphens, parentheses, and leading plus.
+ * - 11 digits starting with 0, followed by a valid 10-digit mobile number (e.g. 09486939201)
+ * - 12 digits starting with country code 91, followed by a valid 10-digit mobile number (e.g. +91 94869 39201, 919486939201)
+ * - Allows spaces, hyphens, parentheses, and a leading plus sign.
+ * - Rejects any numbers not matching these valid formats.
  */
 export const isValidPhone = (phone = '') => {
   const digits = String(phone).replace(/\D/g, '');
@@ -61,7 +57,7 @@ export const isValidPhone = (phone = '') => {
   if (digits.length === 12 && digits.startsWith('91')) {
     return /^[6-9]\d{9}$/.test(digits.slice(2));
   }
-  return digits.length >= 10 && digits.length <= 13;
+  return false;
 };
 
 /**
@@ -193,14 +189,7 @@ export const sendEnquiryEmail = async ({
     service_required: cleanService,
     form_source: effectiveFormType,
     submission_time: submissionTime,
-    to_email: RECIPIENT_EMAIL,
-    recipient_email: RECIPIENT_EMAIL,
-    primary_email: PRIMARY_RECIPIENT_EMAIL,
-    secondary_email: SECONDARY_RECIPIENT_EMAIL,
-    cc_email: SECONDARY_RECIPIENT_EMAIL,
-    bcc_email: SECONDARY_RECIPIENT_EMAIL,
-    reply_to: PRIMARY_RECIPIENT_EMAIL,
-    subject: `New Service Enquiry — ${cleanService} [${effectiveFormType}]`
+    subject: `New Service Enquiry — S.P.T. Electrical Services (${cleanService})`
   };
 
   // 5. Send payload to EmailJS REST API
