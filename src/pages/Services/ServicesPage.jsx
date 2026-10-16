@@ -10,13 +10,13 @@ const servicesBreadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://spt-electrials.netlify.app/'
+      item: 'https://sptelectricalscliniclab.com/'
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Services',
-      item: 'https://spt-electrials.netlify.app/services'
+      item: 'https://sptelectricalscliniclab.com/services'
     }
   ]
 };
@@ -172,7 +172,7 @@ export const ServicesPage = () => {
       <SEO 
         title="Electrical Services in Tirunelveli & Palayamkottai | S.P.T."
         description="Professional electrical installation, house rewiring, panel maintenance, LED lighting & diagnostic repairs in Tirunelveli & Palayamkottai by S.P.T."
-        canonicalUrl="https://spt-electrials.netlify.app/services"
+        canonicalUrl="https://sptelectricalscliniclab.com/services"
         structuredData={servicesBreadcrumbSchema}
       />
       <Header onOpenContactModal={handleOpenContactModal} />

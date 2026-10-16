@@ -10,13 +10,13 @@ const aboutBreadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://spt-electrials.netlify.app/'
+      item: 'https://sptelectricalscliniclab.com/'
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'About Us',
-      item: 'https://spt-electrials.netlify.app/about'
+      item: 'https://sptelectricalscliniclab.com/about'
     }
   ]
 };
@@ -80,7 +80,7 @@ export const AboutPage = () => {
       <SEO 
         title="About Us | S.P.T. Electrical Services | Tirunelveli Electrician"
         description="Learn about S.P.T. Electrical Services. Providing reliable, code-compliant electrical work, wiring, and repairs across Tirunelveli and Palayamkottai."
-        canonicalUrl="https://spt-electrials.netlify.app/about"
+        canonicalUrl="https://sptelectricalscliniclab.com/about"
         structuredData={aboutBreadcrumbSchema}
       />
       <Header onOpenContactModal={handleOpenContactModal} />

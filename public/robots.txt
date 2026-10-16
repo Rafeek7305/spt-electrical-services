@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://spt-electrials.netlify.app/sitemap.xml
+Sitemap: https://sptelectricalscliniclab.com/sitemap.xml

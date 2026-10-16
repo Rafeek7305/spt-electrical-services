@@ -10,13 +10,13 @@ const contactBreadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://spt-electrials.netlify.app/'
+      item: 'https://sptelectricalscliniclab.com/'
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Contact',
-      item: 'https://spt-electrials.netlify.app/contact'
+      item: 'https://sptelectricalscliniclab.com/contact'
     }
   ]
 };
@@ -110,7 +110,7 @@ export const ContactPage = () => {
       <SEO 
         title="Contact S.P.T. Electrical Services | Call +91 94869 39201"
         description="Contact S.P.T. Electrical Services in Tirunelveli & Palayamkottai. Call or WhatsApp +91 94869 39201 for prompt electrical installations, rewiring & repairs."
-        canonicalUrl="https://spt-electrials.netlify.app/contact"
+        canonicalUrl="https://sptelectricalscliniclab.com/contact"
         structuredData={contactBreadcrumbSchema}
       />
       <Header onOpenContactModal={handleOpenContactModal} />

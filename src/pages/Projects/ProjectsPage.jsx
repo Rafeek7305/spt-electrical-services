@@ -10,13 +10,13 @@ const projectsBreadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://spt-electrials.netlify.app/'
+      item: 'https://sptelectricalscliniclab.com/'
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Projects',
-      item: 'https://spt-electrials.netlify.app/projects'
+      item: 'https://sptelectricalscliniclab.com/projects'
     }
   ]
 };
@@ -89,7 +89,7 @@ export const ProjectsPage = () => {
       <SEO 
         title="Electrical Projects & Work Portfolio | S.P.T. Electrical Services"
         description="Browse completed residential, commercial, and panel installation projects by S.P.T. Electrical Services in Tirunelveli, Palayamkottai, and surrounding areas."
-        canonicalUrl="https://spt-electrials.netlify.app/projects"
+        canonicalUrl="https://sptelectricalscliniclab.com/projects"
         structuredData={projectsBreadcrumbSchema}
       />
       <Header onOpenContactModal={handleOpenContactModal} />

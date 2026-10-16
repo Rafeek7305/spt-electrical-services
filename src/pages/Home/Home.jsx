@@ -97,7 +97,7 @@ export const Home = () => {
       <SEO 
         title="S.P.T. Electrical Services | Electrician in Tirunelveli & Palayamkottai"
         description="Licensed electrician in Tirunelveli & Palayamkottai. Safe electrical installations, house rewiring, MCB panel upgrades & repairs. Call +91 94869 39201."
-        canonicalUrl="https://spt-electrials.netlify.app/"
+        canonicalUrl="https://sptelectricalscliniclab.com/"
         structuredData={homeFaqSchema}
       />
       <Header onOpenContactModal={handleOpenContactModal} />

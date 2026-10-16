@@ -5,7 +5,7 @@ export const SEO = ({
   description,
   canonicalUrl,
   ogType = 'website',
-  ogImage = 'https://spt-electrials.netlify.app/logo.png',
+  ogImage = 'https://sptelectricalscliniclab.com/logo.png',
   structuredData = null
 }) => {
   useEffect(() => {
