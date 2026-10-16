@@ -94,7 +94,7 @@ export const ContactPage = () => {
         service: formData.service,
         location: formData.location,
         message: formData.message,
-        formSource: 'Main Contact Page Form',
+        formType: 'Send Enquiry',
         honeypot: formData.hp_company
       });
 

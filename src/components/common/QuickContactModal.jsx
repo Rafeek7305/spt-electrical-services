@@ -33,7 +33,7 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
         phone: formData.phone,
         service: formData.service,
         message: formData.notes,
-        formSource: 'Quick Contact Modal (Request Electrical Service)',
+        formType: 'Get a Service',
         honeypot: formData.hp_company
       });
 

@@ -10,6 +10,9 @@
  * - Never logs customer Personal Identifiable Information (PII) in production.
  */
 
+const DEFAULT_SERVICE_ID = 'service_1s224ki';
+const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
+const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
 const RECIPIENT_EMAIL = 'starrabik76@gmail.com';
 
 /**
@@ -55,12 +58,12 @@ export const getFormattedTimestamp = () => {
 };
 
 /**
- * Checks whether EmailJS credentials are fully configured in Vite environment variables.
+ * Checks whether EmailJS credentials are fully configured.
  */
 export const isEmailServiceConfigured = () => {
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || DEFAULT_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || DEFAULT_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || DEFAULT_PUBLIC_KEY;
 
   return Boolean(
     serviceId &&
@@ -81,8 +84,9 @@ export const isEmailServiceConfigured = () => {
  * @param {string} [data.email] - Customer's email (optional)
  * @param {string} data.service - Required electrical service (required)
  * @param {string} [data.location] - Location / Area (optional)
- * @param {string} data.message - Work details / notes (required or optional depending on form)
- * @param {string} data.formSource - Origin form identifier
+ * @param {string} [data.message] - Work details / notes (optional on modal, required on contact page)
+ * @param {string} [data.formType] - Origin form identifier ('Get a Service' or 'Send Enquiry')
+ * @param {string} [data.formSource] - Alias for formType
  * @param {string} [data.honeypot] - Bot trap field (must be empty)
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
@@ -93,7 +97,8 @@ export const sendEnquiryEmail = async ({
   service = '',
   location = '',
   message = '',
-  formSource = 'Website Enquiry',
+  formType = '',
+  formSource = '',
   honeypot = ''
 }) => {
   // 1. Honeypot check - silently discard bot submissions
@@ -109,6 +114,7 @@ export const sendEnquiryEmail = async ({
   const cleanLocation = sanitizeSingleLine(location);
   const cleanEmail = email ? sanitizeSingleLine(email) : '';
   const cleanMessage = String(message || '').trim();
+  const effectiveFormType = formType || formSource || 'General Enquiry';
 
   if (!cleanName) {
     return { success: false, error: 'Please enter your Full Name.' };
@@ -126,58 +132,47 @@ export const sendEnquiryEmail = async ({
     return { success: false, error: 'Please select a required service.' };
   }
 
-  // 3. Check environment configuration
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  // 3. Resolve configuration
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || DEFAULT_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || DEFAULT_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || DEFAULT_PUBLIC_KEY;
 
   if (!serviceId || !templateId || !publicKey) {
-    if (import.meta.env.DEV) {
-      console.warn(
-        '[EmailService] EmailJS credentials are not configured.\n' +
-        'Please add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY to your .env file.\n' +
-        'Simulated enquiry submission:',
-        {
-          to_email: RECIPIENT_EMAIL,
-          form_source: formSource,
-          from_name: cleanName,
-          phone_number: cleanPhone,
-          customer_email: cleanEmail || 'Not provided',
-          service_required: cleanService,
-          location: cleanLocation || 'Not provided',
-          message: cleanMessage || 'No extra notes provided',
-          submission_time: getFormattedTimestamp()
-        }
-      );
-
-      return {
-        success: false,
-        error: 'Email service configuration required: Set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY in your .env file.'
-      };
-    }
-
     return {
       success: false,
       error: 'Enquiry service is currently being configured. Please call us directly at +91 94869 39201 or message us on WhatsApp.'
     };
   }
 
-  // 4. Construct template parameters
+  // 4. Construct template parameters matching requested EmailJS template variables
   const submissionTime = getFormattedTimestamp();
   const hasValidEmail = isValidEmail(cleanEmail);
 
+  // Safely handle optional fields when empty
+  const safeEmail = cleanEmail || 'Not provided';
+  const safeLocation = cleanLocation || 'Not provided';
+  const safeMessage = cleanMessage || 'No additional details provided';
+
   const templateParams = {
+    // Primary requested template variables
+    form_type: effectiveFormType,
+    customer_name: cleanName,
+    phone: cleanPhone,
+    customer_email: safeEmail,
+    service: cleanService,
+    location: safeLocation,
+    message: safeMessage,
+    submitted_at: submissionTime,
+
+    // Useful aliases to ensure compatibility with various template placeholders
     to_email: RECIPIENT_EMAIL,
-    subject: `New Service Enquiry — S.P.T. Electrical Services (${cleanService})`,
-    form_source: formSource,
+    reply_to: hasValidEmail ? cleanEmail : RECIPIENT_EMAIL,
     from_name: cleanName,
     phone_number: cleanPhone,
-    customer_email: hasValidEmail ? cleanEmail : 'Not provided',
     service_required: cleanService,
-    location: cleanLocation || 'Not provided',
-    message: cleanMessage || 'No extra notes provided',
     submission_time: submissionTime,
-    reply_to: hasValidEmail ? cleanEmail : RECIPIENT_EMAIL
+    form_source: effectiveFormType,
+    subject: `New Service Enquiry — S.P.T. Electrical Services (${cleanService})`
   };
 
   // 5. Send payload to EmailJS REST API
@@ -200,6 +195,15 @@ export const sendEnquiryEmail = async ({
     }
 
     const errorText = await response.text();
+    console.error('[EmailJS Error]', errorText);
+
+    if (errorText.toLowerCase().includes('invalid grant') || errorText.toLowerCase().includes('reconnect')) {
+      return {
+        success: false,
+        error: 'Email service notice: Please reconnect your Gmail account in your EmailJS dashboard (service_1s224ki). Or reach us directly at +91 94869 39201.'
+      };
+    }
+
     return {
       success: false,
       error: errorText || 'Unable to submit enquiry right now. Please call us directly at +91 94869 39201.'
