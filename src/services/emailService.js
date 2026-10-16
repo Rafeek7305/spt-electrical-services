@@ -1,18 +1,23 @@
 /**
  * Email Service for S.P.T. Electrical Services
- * Sends customer enquiries to starrabik76@gmail.com via EmailJS REST API.
+ * Sends customer enquiries to starrabik76@gmail.com and S.udaiyar8080@gmail.com via EmailJS REST API.
  * Uses native fetch with zero extra npm dependencies.
  *
- * Security & Anti-Spam:
- * - Strips CR/LF characters from single-line fields to prevent header injection.
- * - Honeypot detection to silently drop automated bot spam.
- * - Uses EmailJS Public Key designed for browser client execution.
- * - Never logs customer Personal Identifiable Information (PII) in production.
+ * Core 5 Fields (Required on all forms):
+ * 1. Full Name (customer_name)
+ * 2. Phone Number (phone)
+ * 3. Area / Location (location / area)
+ * 4. Service Required (service)
+ * 5. Brief Description of Work (message / description)
  */
 
-const DEFAULT_SERVICE_ID = 'service_1s224ki';
-const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
-const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
+export const DEFAULT_SERVICE_ID = 'service_1s224ki';
+export const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
+export const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
+export const PRIMARY_RECIPIENT_EMAIL = 'starrabik76@gmail.com';
+export const SECONDARY_RECIPIENT_EMAIL = 'S.udaiyar8080@gmail.com';
+export const RECIPIENT_EMAILS = [PRIMARY_RECIPIENT_EMAIL, SECONDARY_RECIPIENT_EMAIL];
+export const RECIPIENT_EMAIL = `${PRIMARY_RECIPIENT_EMAIL}, ${SECONDARY_RECIPIENT_EMAIL}`;
 
 /**
  * Shared standardized service options across every enquiry form.
@@ -189,7 +194,14 @@ export const sendEnquiryEmail = async ({
     service_required: cleanService,
     form_source: effectiveFormType,
     submission_time: submissionTime,
-    subject: `New Service Enquiry — S.P.T. Electrical Services (${cleanService})`
+    to_email: RECIPIENT_EMAIL,
+    recipient_email: RECIPIENT_EMAIL,
+    primary_email: PRIMARY_RECIPIENT_EMAIL,
+    secondary_email: SECONDARY_RECIPIENT_EMAIL,
+    cc_email: SECONDARY_RECIPIENT_EMAIL,
+    bcc_email: SECONDARY_RECIPIENT_EMAIL,
+    reply_to: PRIMARY_RECIPIENT_EMAIL,
+    subject: `New Service Enquiry — S.P.T. Electrical Services (${cleanService}) [${effectiveFormType}]`
   };
 
   // 5. Send payload to EmailJS REST API
