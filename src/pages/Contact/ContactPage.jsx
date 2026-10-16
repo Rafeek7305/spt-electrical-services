@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '../../components/common/SEO';
+
+const contactBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://spt-electrials.netlify.app/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Contact',
+      item: 'https://spt-electrials.netlify.app/contact'
+    }
+  ]
+};
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
@@ -87,6 +107,12 @@ export const ContactPage = () => {
 
   return (
     <div className="contact-page-root">
+      <SEO 
+        title="Contact S.P.T. Electrical Services | Call +91 94869 39201"
+        description="Contact S.P.T. Electrical Services in Tirunelveli & Palayamkottai. Call or WhatsApp +91 94869 39201 for prompt electrical installations, rewiring & repairs."
+        canonicalUrl="https://spt-electrials.netlify.app/contact"
+        structuredData={contactBreadcrumbSchema}
+      />
       <Header onOpenContactModal={handleOpenContactModal} />
 
       <main className="contact-main-content">
@@ -124,7 +150,7 @@ export const ContactPage = () => {
 
               {/* Subtitle */}
               <p className="sp-breadcrumb-subtitle">
-                Let's discuss your electrical installation, repair, or maintenance requirements.
+                Let's discuss your electrical installation, repair, or maintenance requirements across Tirunelveli &amp; Palayamkottai.
               </p>
 
               {/* Quick Trust Highlights */}
@@ -157,7 +183,7 @@ export const ContactPage = () => {
                 </h2>
                 
                 <p className="ct-info-desc">
-                  Whether you need a new installation, electrical repairs, wiring work, or maintenance, get in touch with S.P.T. Electrical Services to discuss your requirements.
+                  Whether you need a new installation, electrical repairs, wiring work, or maintenance in Tirunelveli, Palayamkottai, or nearby areas, get in touch with S.P.T. Electrical Services.
                 </p>
 
                 <div className="ct-info-blocks">

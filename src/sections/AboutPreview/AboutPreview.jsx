@@ -56,10 +56,11 @@ export const AboutPreview = ({ onOpenContactModal }) => {
             <div className="about-main-img-card">
               <img 
                 src={aboutImg} 
-                alt="S.P.T. Electrical Services engineering and control room" 
+                alt="S.P.T. Electrical Services electrical engineering and control room in Tirunelveli" 
                 className="about-hero-img"
                 width="640"
                 height="500"
+                loading="lazy"
               />
               <div className="about-img-gradient-overlay"></div>
             </div>
@@ -112,7 +113,7 @@ export const AboutPreview = ({ onOpenContactModal }) => {
           </h2>
 
           <p className="about-lead-text">
-            S.P.T. Electrical Services is a premier electrical engineering and contracting provider delivering uncompromising quality across residential, commercial, and industrial infrastructure.
+            S.P.T. Electrical Services is a premier electrical contracting provider delivering uncompromising quality across residential, commercial, and industrial infrastructure in Tirunelveli and surrounding areas.
           </p>
 
           <p className="about-secondary-text">

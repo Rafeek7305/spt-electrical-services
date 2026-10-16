@@ -67,11 +67,11 @@ export const Footer = ({ onOpenContactModal }) => {
         <div className="footer-grid">
           {/* Brand Col */}
           <div className="footer-brand-col">
-            <a href="#home" className="footer-logo-link" onClick={(e) => handleNavClick(e, '#home')}>
-              <img src={logoImg} alt="S.P.T. Electrical Services Logo" className="footer-logo" />
+            <a href="/" className="footer-logo-link" onClick={(e) => handleNavClick(e, '/', 'home')}>
+              <img src={logoImg} alt="S.P.T. Electrical Services Logo" className="footer-logo" width="180" height="48" loading="lazy" />
             </a>
             <p className="footer-brand-desc">
-              S.P.T. Electrical Services delivers licensed, high-standard electrical installation, wiring, panel maintenance, and repairs for residential, commercial, and industrial clients.
+              S.P.T. Electrical Services delivers licensed, high-standard electrical installation, wiring, panel maintenance, and repairs for residential, commercial, and industrial clients across Tirunelveli and Palayamkottai.
             </p>
             
             <div className="footer-trust-badge">
@@ -90,8 +90,8 @@ export const Footer = ({ onOpenContactModal }) => {
               <li><a href="/" onClick={(e) => handleNavClick(e, '/', 'home')}>Home</a></li>
               <li><a href="/services" onClick={(e) => handleNavClick(e, '/services', 'services')}>Services</a></li>
               <li><a href="/about" onClick={(e) => handleNavClick(e, '/about', 'about')}>About Us</a></li>
-              <li><a href="#gallery" onClick={(e) => handleNavClick(e, '#gallery', 'gallery')}>Work Gallery</a></li>
-              <li><a href="#process" onClick={(e) => handleNavClick(e, '#process', 'process')}>Our Process</a></li>
+              <li><a href="/projects" onClick={(e) => handleNavClick(e, '/projects', 'projects')}>Projects</a></li>
+              <li><a href="/contact" onClick={(e) => handleNavClick(e, '/contact', 'contact')}>Contact</a></li>
               <li><a href="#faq" onClick={(e) => handleNavClick(e, '#faq', 'faq')}>FAQ</a></li>
             </ul>
           </div>

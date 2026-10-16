@@ -226,7 +226,7 @@ export const WorkShowcase = ({ onOpenContactModal }) => {
                 <div className="project-img-wrapper">
                   <img 
                     src={item.img} 
-                    alt={item.title} 
+                    alt={`${item.title} - ${item.location}`} 
                     className="project-cover-image"
                     loading="lazy"
                     width="600"
@@ -293,8 +293,11 @@ export const WorkShowcase = ({ onOpenContactModal }) => {
               <div className="lightbox-image-side">
                 <img 
                   src={selectedProject.img} 
-                  alt={selectedProject.title} 
+                  alt={`${selectedProject.title} - ${selectedProject.location}`} 
                   className="lightbox-hero-img" 
+                  width="600"
+                  height="450"
+                  loading="lazy"
                 />
                 <div className="lightbox-img-badge">
                   <IconShieldCheck size={16} />

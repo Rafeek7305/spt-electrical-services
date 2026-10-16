@@ -125,7 +125,7 @@ export const Services = ({ onOpenContactModal }) => {
             <span className="services-gold-accent">Built for Safety & Scale</span>
           </h2>
           <p className="services-main-subtitle">
-            Certified residential, commercial, and industrial electrical solutions engineered to the highest safety and regulatory standards.
+            Certified residential, commercial, and industrial electrical solutions engineered to the highest safety and regulatory standards in Tirunelveli and surrounding areas.
           </p>
         </div>
 
@@ -201,10 +201,11 @@ export const Services = ({ onOpenContactModal }) => {
               <div className="showcase-media-frame">
                 <img 
                   src={currentService.img} 
-                  alt={currentService.title} 
+                  alt={`${currentService.title} - Professional Electrical Work in Tirunelveli`} 
                   className="showcase-cover-img"
                   width="720"
                   height="400"
+                  loading="lazy"
                 />
                 <div className="showcase-media-gradient"></div>
 

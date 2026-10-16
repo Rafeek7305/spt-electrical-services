@@ -1,5 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '../../components/common/SEO';
+
+const servicesBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://spt-electrials.netlify.app/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Services',
+      item: 'https://spt-electrials.netlify.app/services'
+    }
+  ]
+};
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
@@ -149,6 +169,12 @@ export const ServicesPage = () => {
 
   return (
     <div className="services-page-root">
+      <SEO 
+        title="Electrical Services in Tirunelveli & Palayamkottai | S.P.T."
+        description="Professional electrical installation, house rewiring, panel maintenance, LED lighting & diagnostic repairs in Tirunelveli & Palayamkottai by S.P.T."
+        canonicalUrl="https://spt-electrials.netlify.app/services"
+        structuredData={servicesBreadcrumbSchema}
+      />
       <Header onOpenContactModal={handleOpenContactModal} />
 
       <main className="services-main-content">
@@ -186,7 +212,7 @@ export const ServicesPage = () => {
 
               {/* Short Subtitle */}
               <p className="sp-breadcrumb-subtitle">
-                Reliable electrical solutions for homes, shops, and workplaces.
+                Reliable electrical solutions for homes, shops, and workplaces across Tirunelveli &amp; Palayamkottai.
               </p>
 
               {/* Quick Trust Highlights */}
@@ -345,10 +371,11 @@ export const ServicesPage = () => {
                 <div className="sp-sector-img-wrap">
                   <img 
                     src={imgResidential} 
-                    alt="Residential Electrical Work" 
+                    alt="Residential electrical wiring, switchboard and lighting services in Tirunelveli" 
                     className="sp-sector-img"
                     width="600"
                     height="380"
+                    loading="lazy"
                   />
                   <div className="sp-sector-chip">Homes & Apartments</div>
                 </div>
@@ -390,10 +417,11 @@ export const ServicesPage = () => {
                 <div className="sp-sector-img-wrap">
                   <img 
                     src={imgCommercial} 
-                    alt="Commercial Electrical Work" 
+                    alt="Commercial electrical maintenance and distribution panel work in Tirunelveli" 
                     className="sp-sector-img"
                     width="600"
                     height="380"
+                    loading="lazy"
                   />
                   <div className="sp-sector-chip">Shops & Business Spaces</div>
                 </div>

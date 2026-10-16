@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '../../components/common/SEO';
+
+const aboutBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://spt-electrials.netlify.app/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'About Us',
+      item: 'https://spt-electrials.netlify.app/about'
+    }
+  ]
+};
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
@@ -57,6 +77,12 @@ export const AboutPage = () => {
 
   return (
     <div className="about-page-root">
+      <SEO 
+        title="About Us | S.P.T. Electrical Services | Tirunelveli Electrician"
+        description="Learn about S.P.T. Electrical Services. Providing reliable, code-compliant electrical work, wiring, and repairs across Tirunelveli and Palayamkottai."
+        canonicalUrl="https://spt-electrials.netlify.app/about"
+        structuredData={aboutBreadcrumbSchema}
+      />
       <Header onOpenContactModal={handleOpenContactModal} />
 
       <main className="about-main-content">
@@ -94,7 +120,7 @@ export const AboutPage = () => {
 
               {/* Subtitle */}
               <p className="sp-breadcrumb-subtitle">
-                Learn more about S.P.T. Electrical Services and our commitment to reliable electrical work.
+                Learn more about S.P.T. Electrical Services and our commitment to reliable electrical work across Tirunelveli &amp; Palayamkottai.
               </p>
 
               {/* Quick Trust Highlights */}
@@ -126,7 +152,7 @@ export const AboutPage = () => {
                 </h2>
                 
                 <p className="ab-intro-paragraph">
-                  S.P.T. Electrical Services provides electrical installation, repair, and maintenance solutions for residential and small commercial spaces. We focus on understanding each customer's requirements and delivering practical electrical solutions with care and attention to safety.
+                  S.P.T. Electrical Services provides electrical installation, repair, and maintenance solutions for residential and commercial spaces across Tirunelveli and Palayamkottai. We focus on understanding each customer's requirements and delivering practical electrical solutions with care and attention to safety.
                 </p>
 
                 <p className="ab-intro-paragraph">
@@ -150,10 +176,11 @@ export const AboutPage = () => {
                 <div className="ab-image-frame">
                   <img 
                     src={imgAboutMain} 
-                    alt="S.P.T. Electrical Services technician at work" 
+                    alt="S.P.T. Electrical Services technician performing electrical service in Tirunelveli" 
                     className="ab-main-img"
                     width="600"
                     height="450"
+                    loading="lazy"
                   />
                   <div className="ab-image-badge">
                     <IconShieldCheck size={18} className="ab-badge-icon" />
