@@ -149,6 +149,8 @@ export const Header = ({ onOpenContactModal }) => {
               src={logoImg} 
               alt="S.P.T. Electrical Services Logo" 
               className="header-logo" 
+              width="180"
+              height="48"
             />
           </a>
 
@@ -211,7 +213,7 @@ export const Header = ({ onOpenContactModal }) => {
         {/* Drawer Header */}
         <div className="mobile-nav-header">
           <a href="/" className="drawer-logo-wrap" onClick={(e) => handleNavClick(e, '/', 'home')}>
-            <img src={logoImg} alt="S.P.T. Electrical Services" className="mobile-logo" />
+            <img src={logoImg} alt="S.P.T. Electrical Services" className="mobile-logo" width="160" height="42" />
           </a>
           
           <button 

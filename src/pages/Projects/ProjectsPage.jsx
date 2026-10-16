@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '../../components/common/SEO';
+
+const projectsBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://sptelectricalscliniclab.com/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Projects',
+      item: 'https://sptelectricalscliniclab.com/projects'
+    }
+  ]
+};
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
@@ -66,6 +86,12 @@ export const ProjectsPage = () => {
 
   return (
     <div className="projects-page-root">
+      <SEO 
+        title="Electrical Projects & Work Portfolio | S.P.T. Electrical Services"
+        description="Browse completed residential, commercial, and panel installation projects by S.P.T. Electrical Services in Tirunelveli, Palayamkottai, and surrounding areas."
+        canonicalUrl="https://sptelectricalscliniclab.com/projects"
+        structuredData={projectsBreadcrumbSchema}
+      />
       <Header onOpenContactModal={handleOpenContactModal} />
 
       <main className="projects-main-content">
@@ -103,7 +129,7 @@ export const ProjectsPage = () => {
 
               {/* Subtitle */}
               <p className="sp-breadcrumb-subtitle">
-                Explore our portfolio of completed residential, commercial, and panel installation projects.
+                Explore our portfolio of completed residential, commercial, and panel installation projects across Tirunelveli &amp; Palayamkottai.
               </p>
 
               {/* Quick Trust Highlights */}
@@ -142,8 +168,11 @@ export const ProjectsPage = () => {
                   <div className="pj-card-img-wrap">
                     <img 
                       src={project.image} 
-                      alt={project.title} 
+                      alt={`${project.title} - ${project.category} electrical project in Tirunelveli`} 
                       className="pj-card-img" 
+                      width="600"
+                      height="380"
+                      loading="lazy"
                     />
                     <span className="pj-card-chip">{project.category}</span>
                   </div>

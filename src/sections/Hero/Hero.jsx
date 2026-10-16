@@ -172,7 +172,7 @@ export const Hero = ({ onOpenContactModal }) => {
           </h1>
 
           <p className="hero-sync-desc">
-            Electrical installation, maintenance, repair and customized electrical solutions for homes and businesses.
+            Electrical installation, maintenance, repair and customized electrical solutions for homes and businesses across Tirunelveli, Palayamkottai, and nearby areas.
           </p>
 
           <div className="hero-buttons-row">
@@ -232,8 +232,12 @@ export const Hero = ({ onOpenContactModal }) => {
                   <div className="sync-card-img-wrap">
                     <img 
                       src={slide.cardImg} 
-                      alt={slide.title} 
+                      alt={`${slide.title} - S.P.T. Electrical Services Tirunelveli`} 
                       className="sync-card-img" 
+                      width="420"
+                      height="300"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
                     />
 
                     {/* Gold Glow Border Overlay for Active Card */}

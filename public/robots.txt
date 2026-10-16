@@ -1,0 +1,6 @@
+# robots.txt for S.P.T. Electrical Services
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://sptelectricalscliniclab.com/sitemap.xml

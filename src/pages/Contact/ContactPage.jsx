@@ -1,17 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SEO } from '../../components/common/SEO';
+
+const contactBreadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://sptelectricalscliniclab.com/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Contact',
+      item: 'https://sptelectricalscliniclab.com/contact'
+    }
+  ]
+};
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import { QuickContactModal } from '../../components/common/QuickContactModal';
+import { sendEnquiryEmail, SERVICE_OPTIONS, validateEnquiryForm } from '../../services/emailService';
 import { 
   IconZap, 
   IconShieldCheck, 
   IconCheckCircle, 
   IconPhone, 
   IconWhatsApp, 
-  IconArrowRight,
-  IconClock,
-  IconMapPin
+  IconArrowRight
 } from '../../components/common/Icons';
 
 import imgBreadcrumb from '../../assets/images/services/services_breadcrumb.png';
@@ -26,10 +45,10 @@ export const ContactPage = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
-    email: '',
-    service: 'Electrical Installation',
     location: '',
-    message: ''
+    service: SERVICE_OPTIONS[0],
+    message: '',
+    hp_company: ''
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -56,21 +75,45 @@ export const ContactPage = () => {
     if (formError) setFormError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.fullName.trim() || !formData.phone.trim() || !formData.message.trim()) {
-      setFormError('Please fill in all required fields (Full Name, Phone Number, and Message).');
+    const errorMsg = validateEnquiryForm({
+      fullName: formData.fullName,
+      phone: formData.phone,
+      location: formData.location,
+      service: formData.service,
+      message: formData.message
+    });
+
+    if (errorMsg) {
+      setFormError(errorMsg);
       return;
     }
 
     setIsSubmitting(true);
     setFormError('');
 
-    // Simulate clean form handling
-    setTimeout(() => {
+    try {
+      const result = await sendEnquiryEmail({
+        fullName: formData.fullName,
+        phone: formData.phone,
+        location: formData.location,
+        service: formData.service,
+        message: formData.message,
+        formType: 'Send Enquiry',
+        honeypot: formData.hp_company
+      });
+
+      if (result.success) {
+        setFormSubmitted(true);
+      } else {
+        setFormError(result.error || 'Failed to send your enquiry. Please call us directly at +91 94869 39201.');
+      }
+    } catch {
+      setFormError('An unexpected error occurred. Please call +91 94869 39201.');
+    } finally {
       setIsSubmitting(false);
-      setFormSubmitted(true);
-    }, 600);
+    }
   };
 
   const handleResetForm = () => {
@@ -78,15 +121,22 @@ export const ContactPage = () => {
     setFormData({
       fullName: '',
       phone: '',
-      email: '',
-      service: 'Electrical Installation',
       location: '',
-      message: ''
+      service: SERVICE_OPTIONS[0],
+      message: '',
+      hp_company: ''
     });
+    setFormError('');
   };
 
   return (
     <div className="contact-page-root">
+      <SEO 
+        title="Contact S.P.T. Electrical Services | Call +91 94869 39201"
+        description="Contact S.P.T. Electrical Services in Tirunelveli & Palayamkottai. Call or WhatsApp +91 94869 39201 for prompt electrical installations, rewiring & repairs."
+        canonicalUrl="https://sptelectricalscliniclab.com/contact"
+        structuredData={contactBreadcrumbSchema}
+      />
       <Header onOpenContactModal={handleOpenContactModal} />
 
       <main className="contact-main-content">
@@ -124,7 +174,7 @@ export const ContactPage = () => {
 
               {/* Subtitle */}
               <p className="sp-breadcrumb-subtitle">
-                Let's discuss your electrical installation, repair, or maintenance requirements.
+                Let's discuss your electrical installation, repair, or maintenance requirements across Tirunelveli &amp; Palayamkottai.
               </p>
 
               {/* Quick Trust Highlights */}
@@ -157,7 +207,7 @@ export const ContactPage = () => {
                 </h2>
                 
                 <p className="ct-info-desc">
-                  Whether you need a new installation, electrical repairs, wiring work, or maintenance, get in touch with S.P.T. Electrical Services to discuss your requirements.
+                  Whether you need a new installation, electrical repairs, wiring work, or maintenance in Tirunelveli, Palayamkottai, or nearby areas, get in touch with S.P.T. Electrical Services.
                 </p>
 
                 <div className="ct-info-blocks">
@@ -243,6 +293,20 @@ export const ContactPage = () => {
                       )}
 
                       <form onSubmit={handleSubmit} className="ct-form-element" noValidate>
+                        {/* Anti-spam honeypot */}
+                        <div className="hp-field" aria-hidden="true" style={{ display: 'none' }}>
+                          <label htmlFor="ct-hp-company">Leave this empty</label>
+                          <input
+                            id="ct-hp-company"
+                            type="text"
+                            name="hp_company"
+                            value={formData.hp_company}
+                            onChange={handleChange}
+                            tabIndex={-1}
+                            autoComplete="off"
+                          />
+                        </div>
+
                         {/* 1. Full Name (Required) */}
                         <div className="ct-field-group">
                           <label htmlFor="ct-fullName" className="ct-label">
@@ -271,24 +335,25 @@ export const ContactPage = () => {
                             type="tel"
                             required
                             className="ct-input"
-                            placeholder="e.g. 9486939201"
+                            placeholder="e.g. 94869 39201"
                             value={formData.phone}
                             onChange={handleChange}
                           />
                         </div>
 
-                        {/* 3. Email Address (Optional) */}
+                        {/* 3. Area / Location (Required) */}
                         <div className="ct-field-group">
-                          <label htmlFor="ct-email" className="ct-label">
-                            Email Address <span className="opt-tag">(Optional)</span>
+                          <label htmlFor="ct-location" className="ct-label">
+                            Area / Location <span className="req-star">*</span>
                           </label>
                           <input 
-                            id="ct-email"
-                            name="email"
-                            type="email"
+                            id="ct-location"
+                            name="location"
+                            type="text"
+                            required
                             className="ct-input"
-                            placeholder="e.g. name@example.com"
-                            value={formData.email}
+                            placeholder="e.g. Palayamkottai, Tirunelveli"
+                            value={formData.location}
                             onChange={handleChange}
                           />
                         </div>
@@ -306,45 +371,24 @@ export const ContactPage = () => {
                             value={formData.service}
                             onChange={handleChange}
                           >
-                            <option value="Electrical Installation">Electrical Installation</option>
-                            <option value="Wiring & Rewiring">Wiring & Rewiring</option>
-                            <option value="Electrical Repairs">Electrical Repairs</option>
-                            <option value="Lighting Installation">Lighting Installation</option>
-                            <option value="Fan, Switch & Socket Installation">Fan, Switch & Socket Installation</option>
-                            <option value="Electrical Maintenance">Electrical Maintenance</option>
-                            <option value="Commercial Electrical Work">Commercial Electrical Work</option>
-                            <option value="Other">Other</option>
+                            {SERVICE_OPTIONS.map((opt) => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
                           </select>
                         </div>
 
-                        {/* 5. Location / Area (Optional) */}
-                        <div className="ct-field-group">
-                          <label htmlFor="ct-location" className="ct-label">
-                            Location / Area <span className="opt-tag">(Optional)</span>
-                          </label>
-                          <input 
-                            id="ct-location"
-                            name="location"
-                            type="text"
-                            className="ct-input"
-                            placeholder="e.g. Neighborhood / City locality"
-                            value={formData.location}
-                            onChange={handleChange}
-                          />
-                        </div>
-
-                        {/* 6. Message (Required) */}
+                        {/* 5. Brief Description of Work (Required) */}
                         <div className="ct-field-group">
                           <label htmlFor="ct-message" className="ct-label">
-                            Message / Work Details <span className="req-star">*</span>
+                            Brief Description of Work <span className="req-star">*</span>
                           </label>
                           <textarea 
                             id="ct-message"
                             name="message"
                             required
-                            rows="4"
+                            rows="2"
                             className="ct-textarea"
-                            placeholder="Describe your electrical requirement or issue..."
+                            placeholder="Briefly describe what electrical work you need..."
                             value={formData.message}
                             onChange={handleChange}
                           ></textarea>
@@ -367,7 +411,7 @@ export const ContactPage = () => {
                       </div>
                       <h3 className="ct-success-title">Enquiry Sent Successfully!</h3>
                       <p className="ct-success-text">
-                        Thank you, <strong>{formData.fullName}</strong>. Your enquiry regarding <strong>{formData.service}</strong> has been logged with S.P.T. Electrical Services.
+                        Thank you, <strong>{formData.fullName}</strong>. Your enquiry regarding <strong>{formData.service}</strong> in <strong>{formData.location}</strong> has been logged with S.P.T. Electrical Services.
                       </p>
                       <p className="ct-success-subtext">
                         Our technician will review your details and contact you via phone ({formData.phone}) shortly.
