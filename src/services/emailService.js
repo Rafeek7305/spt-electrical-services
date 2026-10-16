@@ -3,17 +3,35 @@
  * Sends customer enquiries to starrabik76@gmail.com via EmailJS REST API.
  * Uses native fetch with zero extra npm dependencies.
  *
- * Security & Anti-Spam:
- * - Strips CR/LF characters from single-line fields to prevent header injection.
- * - Honeypot detection to silently drop automated bot spam.
- * - Uses EmailJS Public Key designed for browser client execution.
- * - Never logs customer Personal Identifiable Information (PII) in production.
+ * Core 5 Fields (Required on all forms):
+ * 1. Full Name (customer_name)
+ * 2. Phone Number (phone)
+ * 3. Area / Location (location / area)
+ * 4. Service Required (service)
+ * 5. Brief Description of Work (message / description)
  */
 
-const DEFAULT_SERVICE_ID = 'service_1s224ki';
-const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
-const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
-const RECIPIENT_EMAIL = 'starrabik76@gmail.com';
+export const DEFAULT_SERVICE_ID = 'service_1s224ki';
+export const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
+export const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
+export const PRIMARY_RECIPIENT_EMAIL = 'starrabik76@gmail.com';
+export const SECONDARY_RECIPIENT_EMAIL = 'S.udaiyar8080@gmail.com';
+export const RECIPIENT_EMAILS = [PRIMARY_RECIPIENT_EMAIL, SECONDARY_RECIPIENT_EMAIL];
+export const RECIPIENT_EMAIL = `${PRIMARY_RECIPIENT_EMAIL}, ${SECONDARY_RECIPIENT_EMAIL}`;
+
+/**
+ * Shared standardized service options across every enquiry form.
+ */
+export const SERVICE_OPTIONS = [
+  'Electrical Installation',
+  'Wiring & Rewiring',
+  'Electrical Repairs',
+  'Distribution Board / Panel Work',
+  'Lighting Installation',
+  'Electrical Maintenance',
+  'Commercial Electrical Work',
+  'Other Electrical Service'
+];
 
 /**
  * Sanitizes single-line fields (strips newlines, carriage returns, and excessive whitespace)
@@ -26,20 +44,24 @@ export const sanitizeSingleLine = (str = '') => {
 };
 
 /**
- * Validates phone number format (requires at least 10 digits).
+ * Validates sensible Indian phone numbers without incorrectly rejecting valid formats:
+ * - 10 digits starting with 6, 7, 8, or 9
+ * - 11 digits starting with 0 (e.g. 09486939201)
+ * - 12 digits starting with country code 91 (e.g. +91 94869 39201, 919486939201)
+ * - Allows spaces, hyphens, parentheses, and leading plus.
  */
 export const isValidPhone = (phone = '') => {
-  const digitsOnly = String(phone).replace(/\D/g, '');
-  return digitsOnly.length >= 10;
-};
-
-/**
- * Validates email format if provided.
- */
-export const isValidEmail = (email = '') => {
-  if (!email || !String(email).trim()) return false;
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(String(email).trim());
+  const digits = String(phone).replace(/\D/g, '');
+  if (digits.length === 10) {
+    return /^[6-9]\d{9}$/.test(digits);
+  }
+  if (digits.length === 11 && digits.startsWith('0')) {
+    return /^[6-9]\d{9}$/.test(digits.slice(1));
+  }
+  if (digits.length === 12 && digits.startsWith('91')) {
+    return /^[6-9]\d{9}$/.test(digits.slice(2));
+  }
+  return digits.length >= 10 && digits.length <= 13;
 };
 
 /**
@@ -58,81 +80,84 @@ export const getFormattedTimestamp = () => {
 };
 
 /**
- * Checks whether EmailJS credentials are fully configured.
+ * Validates all 5 required fields consistently across all forms.
+ * Returns an error string if invalid, or null if valid.
  */
-export const isEmailServiceConfigured = () => {
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || DEFAULT_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || DEFAULT_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || DEFAULT_PUBLIC_KEY;
+export const validateEnquiryForm = ({
+  fullName = '',
+  phone = '',
+  location = '',
+  service = '',
+  message = ''
+}) => {
+  const cleanName = sanitizeSingleLine(fullName);
+  const cleanPhone = sanitizeSingleLine(phone);
+  const cleanLocation = sanitizeSingleLine(location);
+  const cleanService = sanitizeSingleLine(service);
+  const cleanMessage = String(message || '').trim();
 
-  return Boolean(
-    serviceId &&
-    templateId &&
-    publicKey &&
-    !serviceId.includes('your_') &&
-    !templateId.includes('your_') &&
-    !publicKey.includes('your_')
-  );
+  if (!cleanName) {
+    return 'Please enter your Full Name.';
+  }
+  if (!cleanPhone) {
+    return 'Please enter your Phone Number.';
+  }
+  if (!isValidPhone(cleanPhone)) {
+    return 'Please enter a valid 10-digit mobile number (e.g. 94869 39201).';
+  }
+  if (!cleanLocation) {
+    return 'Please enter your Area / Location (e.g. Palayamkottai, Tirunelveli).';
+  }
+  if (!cleanService) {
+    return 'Please select the Service Required.';
+  }
+  if (!cleanMessage) {
+    return 'Please provide a Brief Description of Work.';
+  }
+  return null;
 };
 
 /**
- * Sends an enquiry email to starrabik76@gmail.com.
+ * Sends an enquiry email to starrabik76@gmail.com via EmailJS.
  *
  * @param {Object} data
  * @param {string} data.fullName - Customer's full name (required)
  * @param {string} data.phone - Customer's phone number (required)
- * @param {string} [data.email] - Customer's email (optional)
+ * @param {string} data.location - Customer's area/location (required)
  * @param {string} data.service - Required electrical service (required)
- * @param {string} [data.location] - Location / Area (optional)
- * @param {string} [data.message] - Work details / notes (optional on modal, required on contact page)
- * @param {string} [data.formType] - Origin form identifier ('Get a Service' or 'Send Enquiry')
- * @param {string} [data.formSource] - Alias for formType
- * @param {string} [data.honeypot] - Bot trap field (must be empty)
+ * @param {string} data.message - Brief description of work (required)
+ * @param {string} [data.formType] - Form identifier ('Get a Service' or 'Send Enquiry')
+ * @param {string} [data.honeypot] - Anti-spam trap field (must be empty)
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 export const sendEnquiryEmail = async ({
   fullName = '',
   phone = '',
-  email = '',
-  service = '',
   location = '',
+  service = '',
   message = '',
-  formType = '',
-  formSource = '',
+  formType = 'General Enquiry',
   honeypot = ''
 }) => {
   // 1. Honeypot check - silently discard bot submissions
   if (honeypot && String(honeypot).trim().length > 0) {
-    // Pretend success so bot doesn't retry
     return { success: true };
   }
 
-  // 2. Input validation & sanitization
+  // 2. Validate all 5 required fields
+  const validationError = validateEnquiryForm({ fullName, phone, location, service, message });
+  if (validationError) {
+    return { success: false, error: validationError };
+  }
+
   const cleanName = sanitizeSingleLine(fullName);
   const cleanPhone = sanitizeSingleLine(phone);
-  const cleanService = sanitizeSingleLine(service);
   const cleanLocation = sanitizeSingleLine(location);
-  const cleanEmail = email ? sanitizeSingleLine(email) : '';
+  const cleanService = sanitizeSingleLine(service);
   const cleanMessage = String(message || '').trim();
-  const effectiveFormType = formType || formSource || 'General Enquiry';
+  const effectiveFormType = formType || 'Website Enquiry';
 
-  if (!cleanName) {
-    return { success: false, error: 'Please enter your Full Name.' };
-  }
-
-  if (!isValidPhone(cleanPhone)) {
-    return { success: false, error: 'Please enter a valid Phone Number (minimum 10 digits).' };
-  }
-
-  if (cleanEmail && !isValidEmail(cleanEmail)) {
-    return { success: false, error: 'Please enter a valid Email Address or leave it empty.' };
-  }
-
-  if (!cleanService) {
-    return { success: false, error: 'Please select a required service.' };
-  }
-
-  // 3. Resolve configuration
+  // 3. Resolve EmailJS credentials
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || DEFAULT_SERVICE_ID;
   const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || DEFAULT_TEMPLATE_ID;
   const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || DEFAULT_PUBLIC_KEY;
@@ -140,39 +165,42 @@ export const sendEnquiryEmail = async ({
   if (!serviceId || !templateId || !publicKey) {
     return {
       success: false,
-      error: 'Enquiry service is currently being configured. Please call us directly at +91 94869 39201 or message us on WhatsApp.'
+      error: 'Enquiry service is currently being configured. Please call us directly at +91 94869 39201.'
     };
   }
 
-  // 4. Construct template parameters matching requested EmailJS template variables
+  // 4. Construct template parameters containing all 5 fields
   const submissionTime = getFormattedTimestamp();
-  const hasValidEmail = isValidEmail(cleanEmail);
-
-  // Safely handle optional fields when empty
-  const safeEmail = cleanEmail || 'Not provided';
-  const safeLocation = cleanLocation || 'Not provided';
-  const safeMessage = cleanMessage || 'No additional details provided';
 
   const templateParams = {
-    // Primary requested template variables
-    form_type: effectiveFormType,
+    // 5 primary required fields
     customer_name: cleanName,
     phone: cleanPhone,
-    customer_email: safeEmail,
+    location: cleanLocation,
     service: cleanService,
-    location: safeLocation,
-    message: safeMessage,
+    message: cleanMessage,
+
+    // Form origin & time metadata
+    form_type: effectiveFormType,
     submitted_at: submissionTime,
 
-    // Useful aliases to ensure compatibility with various template placeholders
-    to_email: RECIPIENT_EMAIL,
-    reply_to: hasValidEmail ? cleanEmail : RECIPIENT_EMAIL,
+    // Template compatibility aliases
+    area: cleanLocation,
+    description: cleanMessage,
+    customer_email: 'Not requested (Direct phone contact)',
     from_name: cleanName,
     phone_number: cleanPhone,
     service_required: cleanService,
-    submission_time: submissionTime,
     form_source: effectiveFormType,
-    subject: `New Service Enquiry — S.P.T. Electrical Services (${cleanService})`
+    submission_time: submissionTime,
+    to_email: RECIPIENT_EMAIL,
+    recipient_email: RECIPIENT_EMAIL,
+    primary_email: PRIMARY_RECIPIENT_EMAIL,
+    secondary_email: SECONDARY_RECIPIENT_EMAIL,
+    cc_email: SECONDARY_RECIPIENT_EMAIL,
+    bcc_email: SECONDARY_RECIPIENT_EMAIL,
+    reply_to: PRIMARY_RECIPIENT_EMAIL,
+    subject: `New Service Enquiry — ${cleanService} [${effectiveFormType}]`
   };
 
   // 5. Send payload to EmailJS REST API
@@ -211,7 +239,7 @@ export const sendEnquiryEmail = async ({
   } catch {
     return {
       success: false,
-      error: 'Network error. Please check your internet connection or call +91 94869 39201.'
+      error: 'Network connection error. Please check your internet connection or call +91 94869 39201.'
     };
   }
 };

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { IconX, IconPhone, IconWhatsApp, IconCheckCircle, IconZap } from './Icons';
-import { sendEnquiryEmail } from '../../services/emailService';
+import { sendEnquiryEmail, SERVICE_OPTIONS, validateEnquiryForm } from '../../services/emailService';
 import './QuickContactModal.css';
 
 export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    service: defaultService || 'Electrical Installation',
+    location: '',
+    service: defaultService || SERVICE_OPTIONS[0],
     notes: '',
     hp_company: ''
   });
@@ -19,8 +20,16 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      setFormError('Please enter your Full Name and Phone Number.');
+    const errorMsg = validateEnquiryForm({
+      fullName: formData.name,
+      phone: formData.phone,
+      location: formData.location,
+      service: formData.service,
+      message: formData.notes
+    });
+
+    if (errorMsg) {
+      setFormError(errorMsg);
       return;
     }
 
@@ -31,6 +40,7 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
       const result = await sendEnquiryEmail({
         fullName: formData.name,
         phone: formData.phone,
+        location: formData.location,
         service: formData.service,
         message: formData.notes,
         formType: 'Get a Service',
@@ -51,7 +61,14 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
 
   const handleReset = () => {
     setSubmitted(false);
-    setFormData({ name: '', phone: '', service: defaultService || 'Electrical Installation', notes: '', hp_company: '' });
+    setFormData({
+      name: '',
+      phone: '',
+      location: '',
+      service: defaultService || SERVICE_OPTIONS[0],
+      notes: '',
+      hp_company: ''
+    });
     setFormError('');
     onClose();
   };
@@ -123,13 +140,14 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                 />
               </div>
 
+              {/* 1. Full Name (Required) */}
               <div className="form-group">
                 <label htmlFor="service-name">Full Name *</label>
                 <input
                   id="service-name"
                   type="text"
                   required
-                  placeholder="Enter your name"
+                  placeholder="e.g. Rahul Sharma"
                   value={formData.name}
                   onChange={(e) => {
                     setFormData({ ...formData, name: e.target.value });
@@ -138,13 +156,14 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                 />
               </div>
 
+              {/* 2. Phone Number (Required) */}
               <div className="form-group">
                 <label htmlFor="service-phone">Phone Number *</label>
                 <input
                   id="service-phone"
                   type="tel"
                   required
-                  placeholder="Enter contact number"
+                  placeholder="e.g. 94869 39201"
                   value={formData.phone}
                   onChange={(e) => {
                     setFormData({ ...formData, phone: e.target.value });
@@ -153,30 +172,50 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
                 />
               </div>
 
+              {/* 3. Area / Location (Required) */}
               <div className="form-group">
-                <label htmlFor="service-type">Required Service</label>
+                <label htmlFor="service-location">Area / Location *</label>
+                <input
+                  id="service-location"
+                  type="text"
+                  required
+                  placeholder="e.g. Palayamkottai, Tirunelveli"
+                  value={formData.location}
+                  onChange={(e) => {
+                    setFormData({ ...formData, location: e.target.value });
+                    if (formError) setFormError('');
+                  }}
+                />
+              </div>
+
+              {/* 4. Service Required (Required) */}
+              <div className="form-group">
+                <label htmlFor="service-type">Service Required *</label>
                 <select
                   id="service-type"
+                  required
                   value={formData.service}
                   onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                 >
-                  <option value="Electrical Installation">Electrical Installation</option>
-                  <option value="Wiring & Rewiring">Wiring & Rewiring</option>
-                  <option value="Electrical Repairs">Electrical Repairs</option>
-                  <option value="Electrical Maintenance">Electrical Maintenance</option>
-                  <option value="Lighting Installation">Lighting Installation</option>
-                  <option value="Distribution Board / Panel Work">Distribution Board / Panel Work</option>
+                  {SERVICE_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
                 </select>
               </div>
 
+              {/* 5. Brief Description of Work (Required) */}
               <div className="form-group">
-                <label htmlFor="service-notes">Brief Description (Optional)</label>
+                <label htmlFor="service-notes">Brief Description of Work *</label>
                 <textarea
                   id="service-notes"
-                  rows="3"
-                  placeholder="Tell us what electrical work you need..."
+                  required
+                  rows="2"
+                  placeholder="Briefly describe what electrical work you need..."
                   value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, notes: e.target.value });
+                    if (formError) setFormError('');
+                  }}
                 ></textarea>
               </div>
 
@@ -197,7 +236,7 @@ export const QuickContactModal = ({ isOpen, onClose, defaultService = '' }) => {
             </div>
             <h3>Service Request Received!</h3>
             <p>
-              Thank you, <strong>{formData.name}</strong>. Your request for <strong>{formData.service}</strong> has been logged. Our electrical service team will reach out to you shortly.
+              Thank you, <strong>{formData.name}</strong>. Your request for <strong>{formData.service}</strong> in <strong>{formData.location}</strong> has been logged. Our electrical service team will reach out to you shortly.
             </p>
             <button className="btn btn-navy" onClick={handleReset}>
               Close & Return to Site
