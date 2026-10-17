@@ -1,6 +1,6 @@
 /**
  * Email Service for S.P.T. Electrical Services
- * Sends customer enquiries to starrabik76@gmail.com and S.udaiyar8080@gmail.com via EmailJS REST API.
+ * Sends customer enquiries to starrabik76@gmail.com and s.udaiyar8080@gmail.com via EmailJS REST API.
  * Uses native fetch with zero extra npm dependencies.
  *
  * Core 5 Fields (Required on all forms):
@@ -15,7 +15,7 @@ export const DEFAULT_SERVICE_ID = 'service_1s224ki';
 export const DEFAULT_TEMPLATE_ID = 'template_lw8aer2';
 export const DEFAULT_PUBLIC_KEY = 'S6mipfqaFQy9JgG7M';
 export const PRIMARY_RECIPIENT_EMAIL = 'starrabik76@gmail.com';
-export const SECONDARY_RECIPIENT_EMAIL = 'S.udaiyar8080@gmail.com';
+export const SECONDARY_RECIPIENT_EMAIL = 's.udaiyar8080@gmail.com';
 export const RECIPIENT_EMAILS = [PRIMARY_RECIPIENT_EMAIL, SECONDARY_RECIPIENT_EMAIL];
 export const RECIPIENT_EMAIL = `${PRIMARY_RECIPIENT_EMAIL}, ${SECONDARY_RECIPIENT_EMAIL}`;
 
